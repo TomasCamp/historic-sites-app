@@ -5,13 +5,15 @@ from flask_login import LoginManager
 from flask_session import Session
 from src.config import config_by_name
 
+
 db = SQLAlchemy()
 login_manager = LoginManager()
 session = Session()
 
+
 def create_app():
     app = Flask(__name__)
-    env_setting = os.environ.get('FLASK_ENV', 'development')
+    env_setting = os.environ.get("FLASK_ENV", "development")
     app.config.from_object(config_by_name[env_setting])
 
     db.init_app(app)
@@ -31,13 +33,13 @@ def create_app():
     def seed_db():
         """Ejecuta las funciones de carga de datos iniciales (seeds)."""
         from src.models.seeds import init_seeds
-        
+
         print("🌱 Iniciando la carga de datos de prueba (seeds)...")
         init_seeds()
         print("✅ Datos de prueba cargados con éxito.")
 
-    @app.route('/')
+    @app.route("/")
     def index():
         return "¡Estructura base funcionando perfectamente!"
-    
+
     return app
