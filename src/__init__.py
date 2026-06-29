@@ -22,6 +22,8 @@ def create_app():
 
     @app.cli.command("reset-db")
     def reset_db():
+        from src import models
+
         """Elimina y vuelve a crear todas las tablas de la base de datos."""
         print("🗑️ Eliminando tablas existentes...")
         db.drop_all()
