@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from src.models.historic_site.category import Category
     from src.models.historic_site.conservation_status import ConservationStatus
     from src.models.tag.tag import Tag
+    from src.models.change_event.change_event import ChangeEvent
 
 
 class HistoricSite(db.Model):
@@ -37,4 +38,7 @@ class HistoricSite(db.Model):
     )
     tags: Mapped[List["Tag"]] = relationship(
         secondary="tag_historic_site", back_populates="historic_sites"
+    )
+    change_events: Mapped[List["ChangeEvent"]] = relationship(
+        back_populates="historic_site"
     )

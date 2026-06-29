@@ -5,3 +5,4 @@ from src.models.historic_site.historic_site import HistoricSite
 from src.models.historic_site.category import Category
 from src.models.historic_site.conservation_status import ConservationStatus
 from src.models.tag.tag import Tag
+from src.models.change_event.change_event import ChangeEvent

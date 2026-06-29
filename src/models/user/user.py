@@ -1,11 +1,12 @@
 from src import db
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, ForeignKey
 
 
 if TYPE_CHECKING:
     from src.models.user.role import Role
+    from src.models.change_event.change_event import ChangeEvent
 
 
 class User(db.Model):
@@ -21,3 +22,5 @@ class User(db.Model):
 
     role_id: Mapped[int] = mapped_column(ForeignKey("roles.id"), nullable=False)
     role: Mapped["Role"] = relationship(back_populates="users")
+
+    change_events: Mapped[List["ChangeEvent"]] = relationship(back_populates="user")
