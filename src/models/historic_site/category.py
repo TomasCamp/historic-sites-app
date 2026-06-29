@@ -13,6 +13,7 @@ class Category(db.Model):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(40), nullable=False)
+    slug: Mapped[str] = mapped_column(String(40), nullable=False)
 
     historic_sites: Mapped[List["HistoricSite"]] = relationship(
         back_populates="category"

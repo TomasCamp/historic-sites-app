@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 if TYPE_CHECKING:
     from src.models.historic_site.category import Category
     from src.models.historic_site.conservation_status import ConservationStatus
+    from src.models.tag.tag import Tag
 
 
 class HistoricSite(db.Model):
@@ -33,4 +34,7 @@ class HistoricSite(db.Model):
     )
     conservation_status: Mapped[List["ConservationStatus"]] = relationship(
         back_populates="historic_sites"
+    )
+    tags: Mapped[List["Tag"]] = relationship(
+        secondary="tag_historic_site", back_populates="historic_sites"
     )
