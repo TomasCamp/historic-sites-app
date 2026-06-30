@@ -7,11 +7,11 @@ from sqlalchemy import select
 
 
 def create_change_event(
-    action: str, user: User, historic_site: HistoricSite
+    action: str, user_id: int, historic_site_id: int
 ) -> ChangeEvent:
     """Crea y carga un registro de change_events."""
     new_change_event = ChangeEvent(
-        action=action, user=user, historic_site=historic_site
+        action=action, user_id=user_id, historic_site_id=historic_site_id
     )
 
     db.session.add(new_change_event)
@@ -31,7 +31,7 @@ def list_all_change_events() -> List[ChangeEvent]:
 
 
 def update_change_event(
-    change_event_id: int, action: str, user: User, historic_site: HistoricSite
+    change_event_id: int, action: str, user_id: int, historic_site_id: int
 ) -> Optional[ChangeEvent]:
     """Modifica un registro existente de change_event. Si no existe devuelve None."""
     change_event = get_change_event_by_id(change_event_id)
@@ -39,8 +39,8 @@ def update_change_event(
         return None
 
     change_event.action = action
-    change_event.user = user
-    change_event.historic_site = historic_site
+    change_event.user_id = user_id
+    change_event.historic_site_id = historic_site_id
 
     db.session.commit()
     return change_event
