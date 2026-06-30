@@ -30,7 +30,7 @@ class Tag(db.Model):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(40), nullable=False)
-    slug: Mapped[str] = mapped_column(String(40), nullable=False)
+    slug: Mapped[str] = mapped_column(String(40), nullable=False, unique=True)
 
     historic_sites: Mapped[List["HistoricSite"]] = relationship(
         secondary=tag_historic_site, back_populates="tags"
