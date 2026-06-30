@@ -13,7 +13,6 @@ class ConservationStatus(db.Model):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(15))
-    slug: Mapped[str] = mapped_column(String(15), unique=True)
 
     historic_sites: Mapped[List["HistoricSite"]] = relationship(
         back_populates="conservation_status"
