@@ -58,7 +58,7 @@ def update_historic_site(
     category_id: int,
     conservation_status_id: int,
 ) -> Optional[HistoricSite]:
-    """Modifica un registro existente de historic_site. Si no existe devuelve None."""
+    """Modifica un registro existente de historic_sites. Si no existe devuelve None."""
 
     historic_site = get_historic_site_by_id(historic_site_id)
     if not historic_site:
@@ -78,7 +78,7 @@ def update_historic_site(
 
 
 def delete_historic_site(historic_site_id: int) -> bool:
-    """Elimina un registro de la base de datos por su ID."""
+    """Elimina un registro de historic_sites de la base de datos por su ID."""
 
     historic_site = get_historic_site_by_id(historic_site_id)
     if not historic_site:

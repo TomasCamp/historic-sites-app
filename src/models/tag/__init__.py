@@ -15,7 +15,7 @@ def generate_slug(text: str) -> str:
 
 
 def create_tag(name: str) -> Optional[Tag]:
-    """Crea y carga un registro de tags. Devuelve None si existe un tag parecido o igual"""
+    """Crea y carga un registro de tags. Devuelve None si existe un tag parecido o igual."""
 
     slug = generate_slug(name)
 
@@ -43,7 +43,7 @@ def get_tag_by_slug(tag_slug: str) -> Optional[Tag]:
 
 
 def list_all_tags() -> List[Tag]:
-    """Devuelve todos los registros de tags como una lista de python."""
+    """Devuelve todos los registros de tags como una lista."""
 
     stmt = select(Tag)
     return db.session.scalars(stmt).all()
