@@ -1,7 +1,5 @@
 from src import db
 from src.models.change_event.change_event import ChangeEvent
-from src.models.user.user import User
-from src.models.historic_site.historic_site import HistoricSite
 from typing import List, Optional
 from sqlalchemy import select
 
