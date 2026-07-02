@@ -1,4 +1,5 @@
 from src.models import user
+from src.models import historic_site
 
 
 def init_seeds():
@@ -77,3 +78,18 @@ def init_seeds():
     super_user = user.create_user(
         "Jhon", "Doe", "editor@example.com", "password", editor_role.id
     )
+
+    # Conservation_statuses
+    good_status = historic_site.create_conservation_status("Bueno")
+    average_status = historic_site.create_conservation_status("Regular")
+    bad_status = historic_site.create_conservation_status("Malo")
+
+    # Categories
+    category1 = historic_site.create_category("Sitio Arqueológico")
+    category2 = historic_site.create_category("Arquitectura")
+    category3 = historic_site.create_category("Infraestructura")
+    category4 = historic_site.create_category("Monumento Histórico")
+    category5 = historic_site.create_category("Espacio Público")
+    category6 = historic_site.create_category("Institución")
+    category7 = historic_site.create_category("Patrimonio Industrial")
+    category8 = historic_site.create_category("Sitio Natural")
