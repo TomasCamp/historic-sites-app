@@ -70,13 +70,13 @@ def init_seeds():
 
     # Users
     super_user = user.create_super_user(
-        "Jhon", "Doe", "superuser@example.com", "password", admin_role.id
+        "John", "Doe", "superuser@example.com", "password", admin_role.id
     )
-    super_user = user.create_user(
-        "Jhon", "Doe", "admin@example.com", "password", admin_role.id
+    admin_user = user.create_user(
+        "John", "Smith", "admin@example.com", "password", admin_role.id
     )
-    super_user = user.create_user(
-        "Jhon", "Doe", "editor@example.com", "password", editor_role.id
+    editor_user = user.create_user(
+        "Richard", "Roe", "editor@example.com", "password", editor_role.id
     )
 
     # Conservation_statuses
