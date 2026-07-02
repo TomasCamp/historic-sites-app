@@ -2,6 +2,7 @@ from src import db
 from src.models.historic_site.historic_site import HistoricSite
 from src.models.historic_site.category import Category
 from src.models.historic_site.conservation_status import ConservationStatus
+from src.models.tag.tag import Tag
 from typing import List, Optional
 from sqlalchemy import select
 
@@ -86,6 +87,16 @@ def delete_historic_site(historic_site_id: int) -> bool:
 
     db.session.delete(historic_site)
     db.session.commit()
+    return True
+
+
+def assign_tag_to_historic_site(tag: Tag, historic_site: HistoricSite) -> bool:
+    """Asigna un tag a un historic_site."""
+
+    if tag in historic_site.tags:
+        return False
+
+    historic_site.tags.append(tag)
     return True
 
 
