@@ -125,3 +125,4 @@ def assign_permission_to_role(permission: Permission, role: Role) -> None:
     """Asigna un permission a un role."""
 
     role.permissions.append(permission)
+    db.session.commit()

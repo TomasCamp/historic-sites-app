@@ -97,6 +97,7 @@ def assign_tag_to_historic_site(tag: Tag, historic_site: HistoricSite) -> bool:
         return False
 
     historic_site.tags.append(tag)
+    db.session.commit()
     return True
 
 

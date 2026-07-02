@@ -32,7 +32,7 @@ class Role(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(15), nullable=False)
 
-    permissions: Mapped[List["User"]] = relationship(back_populates="role")
+    users: Mapped[List["User"]] = relationship(back_populates="role")
     permissions: Mapped[List["Permission"]] = relationship(
         secondary=role_permission, back_populates="roles"
     )
