@@ -49,7 +49,7 @@ def update_change_event(
 
 
 def delete_change_event(change_event_id: int) -> bool:
-    """Elimina un registro de change_events de la base de datos por su ID."""
+    """Elimina un registro de change_events de la base de datos por su ID. Si no existe devuelve False."""
 
     change_event = get_change_event_by_id(change_event_id)
     if not change_event:
