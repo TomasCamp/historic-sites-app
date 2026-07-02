@@ -29,6 +29,30 @@ def create_user(
     return new_user
 
 
+def create_super_user(
+    name: str, lastname: str, email: str, password: str, role_id: int
+) -> Optional[User]:
+    """Crea y carga un registro de users. Devuelve None si el email ya está en uso."""
+
+    if get_user_by_email(email):
+        return None
+
+    password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
+
+    new_user = User(
+        name=name,
+        lastname=lastname,
+        email=email,
+        password_hash=password_hash,
+        role_id=role_id,
+        is_superuser=True,
+    )
+
+    db.session.add(new_user)
+    db.session.commit()
+    return new_user
+
+
 def get_user_by_id(user_id: int) -> Optional[User]:
     """Busca un registro de users por su ID. Devuelve None si no existe."""
 
