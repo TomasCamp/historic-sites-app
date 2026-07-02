@@ -19,7 +19,7 @@ def create_tag(name: str) -> Optional[Tag]:
 
     slug = generate_slug(name)
 
-    if not get_tag_by_slug(slug):
+    if get_tag_by_slug(slug):
         return None
 
     new_tag = Tag(name=name, slug=slug)
