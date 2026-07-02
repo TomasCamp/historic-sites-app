@@ -104,7 +104,7 @@ def assign_tag_to_historic_site(tag: Tag, historic_site: HistoricSite) -> bool:
 def create_category(name: str) -> Category:
     """Crea y carga un registro de categorys."""
 
-    new_category = Category(action=name)
+    new_category = Category(name=name)
 
     db.session.add(new_category)
     db.session.commit()
