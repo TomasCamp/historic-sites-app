@@ -122,6 +122,6 @@ def list_all_permissions() -> List[Permission]:
 
 
 def assign_permission_to_role(permission: Permission, role: Role) -> None:
-    """Asigna un permiso a un rol."""
+    """Asigna un permission a un role."""
 
     role.permissions.append(permission)
