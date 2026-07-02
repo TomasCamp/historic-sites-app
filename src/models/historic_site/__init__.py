@@ -2,6 +2,7 @@ from src import db
 from src.models.historic_site.historic_site import HistoricSite
 from src.models.historic_site.category import Category
 from src.models.historic_site.conservation_status import ConservationStatus
+from src.models.change_event import create_change_event
 from src.models.tag.tag import Tag
 from typing import List, Optional
 from sqlalchemy import select
@@ -16,6 +17,7 @@ def create_historic_site(
     inauguration_year: int,
     category_id: int,
     conservation_status_id: int,
+    user_id: int,
 ) -> HistoricSite:
     """Crea y carga un registro de historic_sites."""
 
@@ -29,8 +31,14 @@ def create_historic_site(
         category_id=category_id,
         conservation_status_id=conservation_status_id,
     )
-
     db.session.add(new_historic_site)
+    db.session.flush()
+
+    change_event = create_change_event(
+        action="CREATE", user_id=user_id, historic_site_id=new_historic_site.id
+    )
+    db.session.add(change_event)
+
     db.session.commit()
     return new_historic_site
 
