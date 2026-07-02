@@ -3,12 +3,14 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_session import Session
+from flask_bcrypt import Bcrypt
 from src.config import config_by_name
 
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 session = Session()
+bcrypt = Bcrypt()
 
 
 def create_app():
@@ -19,6 +21,7 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     session.init_app(app)
+    bcrypt.init_app(app)
 
     @app.cli.command("reset-db")
     def reset_db():
