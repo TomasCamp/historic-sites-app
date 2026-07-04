@@ -115,7 +115,7 @@ def assign_tag_to_historic_site(
     historic_site.tags.append(tag)
 
     change_event = create_change_event(
-        action="UPDATE", user_id=user_id, historic_site_id=historic_site.id
+        action="UPDATE_TAG", user_id=user_id, historic_site_id=historic_site.id
     )
     db.session.add(change_event)
 
