@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, url_for, flash, request, render_template
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, login_required, logout_user
 from src.services.user_service import authenticate_user
 from src.forms.auth_form import LoginForm
 
@@ -33,3 +33,14 @@ def login():
                 flash(error, "danger")
 
     return render_template("auth/login.html", form=form)
+
+
+@bp.route("/logout")
+@login_required
+def logout():
+    """Cierra la sesión del usuario actual y limpia las cookies de sesión."""
+
+    logout_user()
+
+    flash("La sesión se cerró correctamente.", "success")
+    return redirect(url_for("auth.login"))
