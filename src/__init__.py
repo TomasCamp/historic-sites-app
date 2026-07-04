@@ -37,7 +37,7 @@ def create_app():
     @app.cli.command("seed-db")
     def seed_db():
         """Ejecuta las funciones de carga de datos iniciales (seeds)."""
-        from src.models.seeds import init_seeds
+        from src.seeds import init_seeds
 
         print("🌱 Iniciando la carga de datos de prueba (seeds)...")
         init_seeds()
