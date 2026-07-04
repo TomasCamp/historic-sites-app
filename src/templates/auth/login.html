@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 class="text-center">Iniciar Sesión</h1>
+<form method="POST" class="d-flex flex-column">
+    {{ form.hidden_tag() }}
+    <div class="mb-2">
+        {{form.email.label(class="form-label")}}
+        {{form.email(class="form-control")}}
+    </div>
+    <div class="mb-2">
+        {{form.password.label(class="form-label")}}
+        {{form.password(class="form-control")}}
+    </div>
+    <div class="mb-2">
+        {{form.remember_me(class="form-check-input")}}
+        {{form.remember_me.label(class="form-check-label")}}
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+
+</form>
+
+{% endblock %}

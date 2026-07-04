@@ -1,7 +1,7 @@
-from flask import Flask
+from flask import Flask, render_template
 import os
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user, login_required
 from flask_session import Session
 from flask_bcrypt import Bcrypt
 from src.config import config_by_name
@@ -29,10 +29,12 @@ def create_app():
     def load_user(user_id):
         return get_user_by_id(int(user_id))
 
+    # Configurar redirección si alguien no está logeado.
     login_manager.login_view = "auth.login"
     login_manager.login_message = "Se debe iniciar sesión para acceder."
     login_manager.login_message_category = "danger"
 
+    # Comandos para estructurar e instanciar la BD
     @app.cli.command("reset-db")
     def reset_db():
         from src import models
@@ -54,7 +56,13 @@ def create_app():
         print("✅ Datos de prueba cargados con éxito.")
 
     @app.route("/")
+    @login_required
     def index():
-        return "¡Estructura base funcionando perfectamente!"
+        return render_template("home.html", user=current_user)
+
+    # Registro de blueprints
+    from src.controllers.auth_controller import bp as auth_bp
+
+    app.register_blueprint(auth_bp)
 
     return app
