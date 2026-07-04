@@ -1,5 +1,6 @@
 from src.services import user_service
 from src.services import historic_site_service
+from src.services import tag_service
 
 
 def init_seeds():
@@ -143,4 +144,23 @@ def init_seeds():
         category_id=category1.id,  # Sitio Arqueológico
         conservation_status_id=bad_status.id,  # Malo
         user_id=super_user.id,
+    )
+
+    # Tags
+    tag1 = tag_service.create_tag("Época Colonial")
+    tag2 = tag_service.create_tag("Patrimonio de la Humanidad")
+    tag3 = tag_service.create_tag("Prehispánico")
+    tag4 = tag_service.create_tag("Ingeniería de Hierro")
+
+    historic_site_service.assign_tag_to_historic_site(
+        tag1, historic_site1, editor_user.id
+    )
+    historic_site_service.assign_tag_to_historic_site(
+        tag2, historic_site1, editor_user.id
+    )
+    historic_site_service.assign_tag_to_historic_site(
+        tag1, historic_site2, editor_user.id
+    )
+    historic_site_service.assign_tag_to_historic_site(
+        tag3, historic_site4, editor_user.id
     )
