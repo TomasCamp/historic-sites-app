@@ -23,6 +23,16 @@ def create_app():
     session.init_app(app)
     bcrypt.init_app(app)
 
+    from src.services.user_service import get_user_by_id
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return get_user_by_id(int(user_id))
+
+    login_manager.login_view = "auth.login"
+    login_manager.login_message = "Se debe iniciar sesión para acceder."
+    login_manager.login_message_category = "danger"
+
     @app.cli.command("reset-db")
     def reset_db():
         from src import models
