@@ -38,11 +38,12 @@ def create_super_user(
         return None
 
     password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
+    normalized_email = email.strip().lower()
 
     new_user = User(
         name=name,
         lastname=lastname,
-        email=email,
+        email=normalized_email,
         password_hash=password_hash,
         role_id=role_id,
         is_superuser=True,
@@ -62,7 +63,8 @@ def get_user_by_id(user_id: int) -> Optional[User]:
 def get_user_by_email(user_email: str) -> Optional[User]:
     """Busca un registro de users por su email. Devuelve None si no existe."""
 
-    stmt = select(User).where(User.email == user_email)
+    normalized_email = user_email.strip().lower()
+    stmt = select(User).where(User.email == normalized_email)
     return db.session.scalars(stmt).first()
 
 
