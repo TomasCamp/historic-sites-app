@@ -66,6 +66,7 @@ def update_historic_site(
     inauguration_year: int,
     category_id: int,
     conservation_status_id: int,
+    user_id: int,
 ) -> Optional[HistoricSite]:
     """Modifica un registro existente de historic_sites. Si no existe devuelve None."""
 
@@ -81,6 +82,11 @@ def update_historic_site(
     historic_site.inauguration_year = inauguration_year
     historic_site.category_id = category_id
     historic_site.conservation_status_id = conservation_status_id
+
+    change_event = create_change_event(
+        action="UPDATE", user_id=user_id, historic_site_id=historic_site_id
+    )
+    db.session.add(change_event)
 
     db.session.commit()
     return historic_site
@@ -98,13 +104,21 @@ def delete_historic_site(historic_site_id: int) -> bool:
     return True
 
 
-def assign_tag_to_historic_site(tag: Tag, historic_site: HistoricSite) -> bool:
+def assign_tag_to_historic_site(
+    tag: Tag, historic_site: HistoricSite, user_id: int
+) -> bool:
     """Asigna un tag a un historic_site."""
 
     if tag in historic_site.tags:
         return False
 
     historic_site.tags.append(tag)
+
+    change_event = create_change_event(
+        action="UPDATE", user_id=user_id, historic_site_id=historic_site.id
+    )
+    db.session.add(change_event)
+
     db.session.commit()
     return True
 
