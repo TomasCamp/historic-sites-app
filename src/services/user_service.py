@@ -99,6 +99,18 @@ def delete_user(user_id: int) -> bool:
     return True
 
 
+def authenticate_user(email: str, password: str) -> User:
+    """Compara las credenciales ingresadas con los registros de User y lo devuelve. Si no se encuentra devuelve None."""
+
+    user = get_user_by_email(email)
+    if not user:
+        return None
+
+    if bcrypt.check_password_hash(user.password_hash, password):
+        return user
+    return None
+
+
 def create_role(name: str) -> Role:
     """Crea y carga un registro de roles."""
 
