@@ -25,3 +25,10 @@ class User(db.Model, UserMixin):
     role: Mapped["Role"] = relationship(back_populates="users")
 
     change_events: Mapped[List["ChangeEvent"]] = relationship(back_populates="user")
+
+    def has_permission(self, permission_name: str) -> bool:
+        """Devuelve True si el rol del usuario contiene el permiso solicitado o es superuser."""
+
+        return self.is_superuser or permission_name in [
+            permission.name for permission in self.role.permissions
+        ]
