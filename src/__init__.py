@@ -62,7 +62,9 @@ def create_app():
 
     # Registro de blueprints
     from src.controllers.auth_controller import bp as auth_bp
+    from src.controllers.user_controller import bp as user_bp
 
     app.register_blueprint(auth_bp)
+    app.register_blueprint(user_bp)
 
     return app

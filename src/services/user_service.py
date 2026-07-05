@@ -3,7 +3,7 @@ from src.models.user.user import User
 from src.models.user.role import Role
 from src.models.user.permission import Permission
 from typing import List, Optional
-from sqlalchemy import select
+from sqlalchemy import select, asc, desc
 
 
 def create_user(
@@ -68,10 +68,31 @@ def get_user_by_email(user_email: str) -> Optional[User]:
     return db.session.scalars(stmt).first()
 
 
-def list_all_users() -> List[User]:
-    """Devuelve todos los registros de users como una lista."""
-
+def list_filtered_users(
+    email=None, active=None, role_id=None, sort_by="created_at_desc"
+) -> List[User]:
+    """Devuelve todos los registros de users que cumplan los filtros como una lista."""
     stmt = select(User)
+
+    if email:
+        print("Entro Email")
+        print(email)
+        stmt = stmt.where(User.email.ilike(f"%{email}%"))
+
+    if active:
+        print("Entro active")
+        is_active_bool = active == "1"
+        stmt = stmt.where(User.is_active == is_active_bool)
+
+    if role_id:
+        print("Entro role_id")
+        stmt = stmt.where(User.role_id == int(role_id))
+
+    if sort_by == "created_at_asc":
+        stmt = stmt.order_by(asc(User.created_at))
+    else:
+        stmt = stmt.order_by(desc(User.created_at))
+
     return db.session.scalars(stmt).all()
 
 
@@ -132,7 +153,7 @@ def get_role_by_id(role_id: int) -> Optional[Role]:
 def list_all_roles() -> List[Role]:
     """Devuelve todos los registros de roles como una lista."""
 
-    stmt = select(Role)
+    stmt = select(Role).order_by(asc(Role.name))
     return db.session.scalars(stmt).all()
 
 
