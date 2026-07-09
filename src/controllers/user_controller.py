@@ -11,6 +11,7 @@ bp = Blueprint("users", __name__, url_prefix="/users")
 @login_required
 @permission_required("user_index")
 def index():
+    """Muestra el listado de usuarios con opciones."""
     form = user_forms.UserFilterForm(request.args)
 
     filters = {}
