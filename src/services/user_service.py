@@ -11,7 +11,8 @@ def create_user(
 ) -> Optional[User]:
     """Crea y carga un registro de users. Devuelve None si el email ya está en uso."""
 
-    if get_user_by_email(email):
+    normalized_email = email.strip().lower()
+    if get_user_by_email(normalized_email):
         return None
 
     password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
@@ -19,7 +20,7 @@ def create_user(
     new_user = User(
         name=name,
         lastname=lastname,
-        email=email,
+        email=normalized_email,
         password_hash=password_hash,
         role_id=role_id,
     )
@@ -34,11 +35,11 @@ def create_super_user(
 ) -> Optional[User]:
     """Crea y carga un registro de users. Devuelve None si el email ya está en uso."""
 
-    if get_user_by_email(email):
+    normalized_email = email.strip().lower()
+    if get_user_by_email(normalized_email):
         return None
 
     password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
-    normalized_email = email.strip().lower()
 
     new_user = User(
         name=name,
