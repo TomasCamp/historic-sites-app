@@ -83,3 +83,40 @@ class UserCreateForm(FlaskForm):
         self.role_id.choices = [("", "Seleccione un rol...")] + [
             (str(role.id), role.name) for role in roles
         ]
+
+
+class UserUpdateForm(FlaskForm):
+    name = StringField(
+        "Nombre",
+        validators=[
+            DataRequired("El campo nombre es obligatorio."),
+            Length(3, 60, "El campo nombre debe tener entre 3 y 60 caracteres."),
+            Regexp(
+                r"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$",
+                message="El campo nombre solo puede contener letras y espacios.",
+            ),
+        ],
+    )
+    lastname = StringField(
+        "Apellido",
+        validators=[
+            DataRequired("El campo apellido es obligatorio."),
+            Length(3, 60, "El campo apellido debe tener entre 3 y 60 caracteres."),
+            Regexp(
+                r"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$",
+                message="El campo apellido solo puede contener letras y espacios.",
+            ),
+        ],
+    )
+    role_id = SelectField(
+        "Rol", validators=[DataRequired("Debe seleccionar un rol para el usuario.")]
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        roles = user_service.list_all_roles()
+
+        self.role_id.choices = [("", "Seleccione un rol...")] + [
+            (str(role.id), role.name) for role in roles
+        ]

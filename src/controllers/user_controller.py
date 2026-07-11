@@ -46,3 +46,30 @@ def create():
                 flash(error, "danger")
 
     return render_template("users/create.html", form=form)
+
+
+@bp.route("/update/<int:id>", methods=["GET", "POST"])
+@login_required
+@permission_required("user_update")
+def update(id: int):
+    """Muestra el formulario y procesa la actualización de un nuevo usuario."""
+    user = user_service.get_user_by_id(id)
+
+    if not user:
+        flash("El usuario buscado no existe.", "danger")
+        return redirect(url_for("users.index"))
+
+    form = user_forms.UserUpdateForm(request.form, obj=user)
+
+    if form.validate_on_submit():
+        user_data = form.data.copy()
+        user_data.pop("csrf_token", None)
+        user_service.update_user(id, **user_data)
+        flash("Usuario editado correctamente.", "success")
+        return redirect(url_for("users.index"))
+    else:
+        for field_name, error_messages in form.errors.items():
+            for error in error_messages:
+                flash(error, "danger")
+
+    return render_template("users/update.html", form=form, user=user)
