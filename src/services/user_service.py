@@ -76,17 +76,14 @@ def list_filtered_users(
     stmt = select(User)
 
     if email:
-        print("Entro Email")
         print(email)
         stmt = stmt.where(User.email.ilike(f"%{email}%"))
 
     if active:
-        print("Entro active")
         is_active_bool = active == "1"
         stmt = stmt.where(User.is_active == is_active_bool)
 
     if role_id:
-        print("Entro role_id")
         stmt = stmt.where(User.role_id == int(role_id))
 
     if sort_by == "created_at_asc":
@@ -97,7 +94,7 @@ def list_filtered_users(
     return db.session.scalars(stmt).all()
 
 
-def update_user(user_id: int, name: str, lastname: str) -> Optional[User]:
+def update_user(user_id: int, name: str, lastname: str, role_id: int) -> Optional[User]:
     """Modifica un registro existente de users. Si no existe devuelve None."""
 
     user = get_user_by_id(user_id)
@@ -106,6 +103,7 @@ def update_user(user_id: int, name: str, lastname: str) -> Optional[User]:
 
     user.name = name
     user.lastname = lastname
+    user.role_id = role_id
 
     db.session.commit()
     return user
