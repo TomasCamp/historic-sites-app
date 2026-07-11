@@ -36,6 +36,10 @@ class UserCreateForm(FlaskForm):
         validators=[
             DataRequired("El campo nombre es obligatorio."),
             Length(3, 60, "El campo nombre debe tener entre 3 y 60 caracteres."),
+            Regexp(
+                r"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$",
+                message="El campo nombre solo puede contener letras y espacios.",
+            ),
         ],
     )
     lastname = StringField(
@@ -43,6 +47,10 @@ class UserCreateForm(FlaskForm):
         validators=[
             DataRequired("El campo apellido es obligatorio."),
             Length(3, 60, "El campo apellido debe tener entre 3 y 60 caracteres."),
+            Regexp(
+                r"^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$",
+                message="El campo apellido solo puede contener letras y espacios.",
+            ),
         ],
     )
     email = EmailField(
