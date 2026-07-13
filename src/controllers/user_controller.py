@@ -52,7 +52,7 @@ def create():
 @login_required
 @permission_required("user_update")
 def update(id: int):
-    """Muestra el formulario y procesa la actualización de un nuevo usuario."""
+    """Muestra el formulario y procesa la actualización de un usuario."""
     user = user_service.get_user_by_id(id)
 
     if not user:
