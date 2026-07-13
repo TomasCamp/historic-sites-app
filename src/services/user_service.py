@@ -125,7 +125,7 @@ def authenticate_user(email: str, password: str) -> User:
     """Compara las credenciales ingresadas con los registros de User y lo devuelve. Si no se encuentra devuelve None."""
 
     user = get_user_by_email(email)
-    if not user:
+    if not user or user.is_delete:
         return None
 
     if bcrypt.check_password_hash(user.password_hash, password):

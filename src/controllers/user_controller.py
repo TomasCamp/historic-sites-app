@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import login_required
+from flask_login import login_required, current_user
 from src.controllers.decorators import permission_required
 from src.services import user_service
 from src.forms import user_forms
@@ -73,3 +73,21 @@ def update(id: int):
                 flash(error, "danger")
 
     return render_template("users/update.html", form=form, user=user)
+
+
+@bp.route("/delete/<int:id>", methods=["POST"])
+@login_required
+@permission_required("user_delete")
+def delete(id: int):
+    """Procesa la eliminación lógica de un usuario."""
+    user = user_service.get_user_by_id(id)
+
+    if not user:
+        flash("El usuario buscado no existe.", "danger")
+    elif current_user == user:
+        flash("El usuario no se puede eliminar a si mismo.", "danger")
+    else:
+        user_service.delete_user(id)
+        flash("El usuario fue eliminado correctamente.", "success")
+
+    return redirect(url_for("users.index"))

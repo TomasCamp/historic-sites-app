@@ -54,7 +54,12 @@
             {% else %}
                 <td>
                     <a href={{url_for("users.update", id=user.id)}} class="btn btn-primary">Editar</a>
-                </td>
+                    {% if current_user != user %}
+                        <form action="{{ url_for('users.delete', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar al usuario {{user.email}}?');" class="d-inline">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    {% endif %}
+                </td>     
             {% endif %}
         </tr>
         {% endfor %}
