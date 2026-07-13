@@ -73,7 +73,7 @@ def list_filtered_users(
     email=None, active=None, role_id=None, sort_by="created_at_desc"
 ) -> List[User]:
     """Devuelve todos los registros de users que cumplan los filtros como una lista."""
-    stmt = select(User)
+    stmt = select(User).where(User.is_delete == False)
 
     if email:
         print(email)
@@ -110,13 +110,13 @@ def update_user(user_id: int, name: str, lastname: str, role_id: int) -> Optiona
 
 
 def delete_user(user_id: int) -> bool:
-    """Elimina un registro de users de la base de datos por su ID. Si no existe devuelve False."""
+    """Elimina lógicamente un registro de users de la base de datos por su ID. Si no existe devuelve False."""
 
     user = get_user_by_id(user_id)
     if not user:
         return False
 
-    db.session.delete(user)
+    user.is_delete = True
     db.session.commit()
     return True
 

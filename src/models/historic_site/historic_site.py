@@ -24,6 +24,7 @@ class HistoricSite(db.Model):
     inauguration_year: Mapped[int] = mapped_column(nullable=False)
     registered_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     is_visible: Mapped[bool] = mapped_column(nullable=False, default=True)
+    is_delete: Mapped[bool] = mapped_column(default=False)
 
     category_id: Mapped[int] = mapped_column(
         ForeignKey("categories.id"), nullable=False

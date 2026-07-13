@@ -93,13 +93,13 @@ def update_historic_site(
 
 
 def delete_historic_site(historic_site_id: int) -> bool:
-    """Elimina un registro de historic_sites de la base de datos por su ID. Si no existe devuelve False."""
+    """Elimina un registro lógicamente de historic_sites de la base de datos por su ID. Si no existe devuelve False."""
 
     historic_site = get_historic_site_by_id(historic_site_id)
     if not historic_site:
         return False
 
-    db.session.delete(historic_site)
+    historic_site = True
     db.session.commit()
     return True
 
