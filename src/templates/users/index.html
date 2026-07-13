@@ -58,6 +58,15 @@
                         <form action="{{ url_for('users.delete', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar al usuario {{user.email}}?');" class="d-inline">
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
+                        {% if user.is_active %}
+                            <form action="{{ url_for('users.toggle_status', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de desactivar al usuario {{user.email}}?');" class="d-inline">
+                                <button type="submit" class="btn btn-danger">Desactivar</button>
+                            </form>
+                        {% else %}
+                            <form action="{{ url_for('users.toggle_status', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de activar al usuario {{user.email}}?');" class="d-inline">
+                                <button type="submit" class="btn btn-primary">Activar</button>
+                            </form>
+                        {% endif %}
                     {% endif %}
                 </td>     
             {% endif %}

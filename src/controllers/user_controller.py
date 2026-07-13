@@ -91,3 +91,28 @@ def delete(id: int):
         flash("El usuario fue eliminado correctamente.", "success")
 
     return redirect(url_for("users.index"))
+
+
+@bp.route("/toggle-status/<int:id>", methods=["POST"])
+@login_required
+@permission_required("user_update")
+def toggle_status(id: int):
+    """Invierte el estado activo/inactivo de un usuario."""
+    user = user_service.get_user_by_id(id)
+
+    if not user:
+        flash("El usuario buscado no existe.", "danger")
+    elif current_user == user:
+        flash("El usuario no se puede cambiar el estado a si mismo.", "danger")
+    else:
+        nuevo_estado = not user.is_active
+        user_service.update_user_status(id, nuevo_estado)
+
+        mensaje = (
+            "Usuario activado correctamente."
+            if nuevo_estado
+            else "Usuario desactivado correctamente."
+        )
+        flash(mensaje, "success")
+
+    return redirect(url_for("users.index"))

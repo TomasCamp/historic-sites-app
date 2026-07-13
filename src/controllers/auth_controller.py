@@ -19,14 +19,16 @@ def login():
         user = authenticate_user(email=form.email.data, password=form.password.data)
 
         if user:
-            login_user(user, remember=form.remember_me.data)
+            if user.is_active:
+                login_user(user, remember=form.remember_me.data)
 
-            flash("La sesión se inició con éxito.", "success")
+                flash("La sesión se inició con éxito.", "success")
 
-            next_page = request.args.get("next")
-            return redirect(next_page or url_for("index"))
-
-        flash("Email y/o contraseña incorrectos.", "danger")
+                next_page = request.args.get("next")
+                return redirect(next_page or url_for("index"))
+            flash("El usuario se encuentra actualmente desactivado.", "danger")
+        else:
+            flash("Email y/o contraseña incorrectos.", "danger")
     else:
         for field_name, error_messages in form.errors.items():
             for error in error_messages:

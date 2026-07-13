@@ -109,6 +109,18 @@ def update_user(user_id: int, name: str, lastname: str, role_id: int) -> Optiona
     return user
 
 
+def update_user_status(user_id: int, is_active: bool) -> bool:
+    """Modifica el is_active de un registro existente de users. Si no existe devuelve False."""
+    user = get_user_by_id(user_id)
+    if not user:
+        return False
+
+    user.is_active = is_active
+
+    db.session.commit()
+    return True
+
+
 def delete_user(user_id: int) -> bool:
     """Elimina lógicamente un registro de users de la base de datos por su ID. Si no existe devuelve False."""
 
