@@ -73,7 +73,7 @@ def list_filtered_users(
     email=None, active=None, role_id=None, sort_by="created_at_desc"
 ) -> List[User]:
     """Devuelve todos los registros de users que cumplan los filtros como una lista."""
-    stmt = select(User).where(User.is_delete == False)
+    stmt = select(User).where(User.is_delete.is_(False))
 
     if email:
         print(email)
@@ -81,7 +81,7 @@ def list_filtered_users(
 
     if active:
         is_active_bool = active == "1"
-        stmt = stmt.where(User.is_active == is_active_bool)
+        stmt = stmt.where(User.is_active.is_(is_active_bool))
 
     if role_id:
         stmt = stmt.where(User.role_id == int(role_id))
