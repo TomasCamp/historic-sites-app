@@ -1,7 +1,7 @@
 from src import db
 from src.models.tag.tag import Tag
 from typing import List, Optional
-from sqlalchemy import select
+from sqlalchemy import select, asc, desc
 import unicodedata
 
 
@@ -46,6 +46,28 @@ def list_all_tags() -> List[Tag]:
     """Devuelve todos los registros de tags como una lista."""
 
     stmt = select(Tag)
+    return db.session.scalars(stmt).all()
+
+
+def list_filtered_tags(name: str, sort_by: str) -> List[Tag]:
+    """Devuelve los registros de tags filtrados como una lista"""
+
+    stmt = select(Tag)
+
+    if name:
+        stmt = stmt.where(Tag.name.ilike(f"%{name}%"))
+
+    if sort_by.split("_")[0] == "name":
+        if sort_by == "name_asc":
+            stmt = stmt.order_by(asc(Tag.name))
+        else:
+            stmt = stmt.order_by(desc(Tag.name))
+    else:
+        if sort_by == "created_at_desc":
+            stmt = stmt.order_by(asc(Tag.name))
+        else:
+            stmt = stmt.order_by(desc(Tag.name))
+
     return db.session.scalars(stmt).all()
 
 
