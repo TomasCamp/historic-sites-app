@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 class="text-center mb-3">Crear Etiqueta</h1>
+
+<form method="POST" class="d-flex flex-column">
+    {{ form.hidden_tag() }}
+    
+    <div class="mb-2">
+        {{form.name.label(class="form-label")}}
+        {{form.name(class="form-control")}}
+    </div>
+
+    <div class="mb-2">
+        <button type="submit" class="btn btn-primary">Crear Etiqueta</button>
+        <a href={{url_for("tags.index")}} class="btn btn-danger">Cancelar</a>
+    </div>
+
+</form>
+
+{% endblock %}
