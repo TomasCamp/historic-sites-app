@@ -35,7 +35,11 @@
         <tr>
             <td>{{tag.name}}</td>
             <td>{{tag.created_at.strftime('%Y/%m/%d')}}</td>
-            <td>-</td>   
+            <td>
+                <form action="{{ url_for('tags.delete', id=tag.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar la etiqueta {{tag.name}}?');" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>   
         </tr>
         {% endfor %}
     </tbody>

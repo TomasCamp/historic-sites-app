@@ -44,3 +44,17 @@ def create():
                 flash(error, "danger")
 
     return render_template("tags/create.html", form=form)
+
+
+@bp.post("/delete/<int:id>")
+@login_required
+@permission_required("tag_delete")
+def delete(id: int):
+    """Procesa la eliminación de un tag."""
+
+    if tag_service.delete_tag(id):
+        flash("La etiqueta fue eliminada correctamente.", "success")
+    else:
+        flash("La etiqueta buscada no existe.", "danger")
+
+    return redirect(url_for("tags.index"))
