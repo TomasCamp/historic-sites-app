@@ -5,7 +5,7 @@ from src.models.historic_site.conservation_status import ConservationStatus
 from src.services.change_event_service import create_change_event
 from src.models.tag.tag import Tag
 from typing import List, Optional
-from sqlalchemy import select
+from sqlalchemy import select, asc, desc
 
 
 def create_historic_site(
@@ -53,10 +53,64 @@ def get_historic_site_by_id(historic_site_id: int) -> Optional[HistoricSite]:
     return db.session.get(HistoricSite, historic_site_id)
 
 
-def list_all_historic_sites() -> List[HistoricSite]:
-    """Devuelve todos los registros de historic_sites como una lista."""
-
+def list_filtered_historic_sites(
+    name="",
+    city="",
+    province="",
+    tags=None,
+    conservation_status_id="",
+    registered_at_start=None,
+    registered_at_end=None,
+    is_visible="",
+    sort_by="registered_desc",
+) -> List[HistoricSite]:
+    """Devuelve todos los registros de historic_sites que cumplan los filtros como una lista."""
     stmt = select(HistoricSite)
+
+    if name:
+        stmt = stmt.where(HistoricSite.name.ilike(f"%{name}%"))
+
+    if city:
+        stmt = stmt.where(HistoricSite.city.ilike(f"%{city}%"))
+
+    if province:
+        stmt = stmt.where(HistoricSite.province == province)
+
+    if tags:
+        stmt = stmt.join(HistoricSite.tags).where(Tag.id.in_(tags)).distinct()
+
+    if conservation_status_id:
+        stmt = stmt.where(
+            HistoricSite.conservation_status_id == int(conservation_status_id)
+        )
+
+    if registered_at_start:
+        stmt = stmt.where(HistoricSite.registered_at >= registered_at_start)
+
+    if registered_at_end:
+        stmt = stmt.where(HistoricSite.registered_at <= registered_at_end)
+
+    if is_visible:
+        value = is_visible == "1"
+        stmt = stmt.where(HistoricSite.is_visible.is_(value))
+
+    order = sort_by.split("_")
+    if order[0] == "registered":
+        if order[1] == "asc":
+            stmt = stmt.order_by(asc(HistoricSite.registered_at))
+        else:
+            stmt = stmt.order_by(desc(HistoricSite.registered_at))
+    elif order[0] == "name":
+        if order[1] == "asc":
+            stmt = stmt.order_by(asc(HistoricSite.name))
+        else:
+            stmt = stmt.order_by(desc(HistoricSite.name))
+    else:
+        if order[1] == "asc":
+            stmt = stmt.order_by(asc(HistoricSite.city))
+        else:
+            stmt = stmt.order_by(desc(HistoricSite.city))
+
     return db.session.scalars(stmt).all()
 
 

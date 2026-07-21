@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 class="text-center">Sitios Historicos</h1>
+<div class="mb-3">
+    <h2 class="">Filtros</h2>
+    <form method="GET" class="d-flex flex-wrap">
+        <div class="d-flex w-100 justify-content-between flex-wrap">
+            <div class="mb-2 w-25 me-2">
+                {{form.name.label(class="form-label")}}
+                {{form.name(class="form-control")}}
+            </div>
+            <div class="mb-2 w-25 me-2">
+                {{form.city.label(class="form-label")}}
+                {{form.city(class="form-control")}}
+            </div>
+            <div class="mb-2 w-25 me-2">
+                {{form.province.label(class="form-label")}}
+                {{form.province(class="form-select")}}
+            </div>
+            <div class="mb-2 w-25">
+                {{form.conservation_status_id.label(class="form-label")}}
+                {{form.conservation_status_id(class="form-select")}}
+            </div>
+            <div class="mb-2 w-25 me-2">
+                {{form.registered_at_start.label(class="form-label")}}
+                {{form.registered_at_start(class="form-control")}}
+            </div>
+            <div class="mb-2 w-25 me-2">
+                {{form.registered_at_end.label(class="form-label")}}
+                {{form.registered_at_end(class="form-control")}}
+            </div>
+            <div class="mb-2 w-25 me-2">
+                {{form.is_visible.label(class="form-label")}}
+                {{form.is_visible(class="form-select")}}
+            </div>
+            <div class="mb-2 w-25">
+                {{form.sort_by.label(class="form-label")}}
+                {{form.sort_by(class="form-select")}}
+            </div>
+            <div class="mb-2 w-25 me-2">
+                <label>{{ form.tags.label(class="form-label") }}</label>
+                <div>
+                    {% for subfield in form.tags %}
+                        <label class="form-check-label">
+                            {{ subfield(class="form-check-input") }}
+                            <span>{{ subfield.label.text }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <a href="{{url_for("historic_sites.index")}}" class="btn btn-light">Limpiar Filtros</a>
+    </form>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Portada</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Provincia</th>
+            <th scope="col">Ciudad</th>
+            <th scope="col">Etiquetas</th>
+            <th scope="col">Conservación</th>
+            <th scope="col">Registrado</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for historic_site in historic_sites %}
+        <tr>
+            <td><img src="{{historic_site.cover_image_url}}" style="width: 10vw;"></td>
+            <td>{{historic_site.name}}</td>
+            <td>{{historic_site.province}}</td>
+            <td>{{historic_site.city}}</td>
+            <td>
+                {% for tag in historic_site.tags %}
+                <p class="border border-dark rounded">{{tag.name}}</p>
+                {% endfor %}
+            </td>
+            <td>{{historic_site.conservation_status.name}}</td>
+            <td>{{historic_site.registered_at.strftime('%Y/%m/%d')}}</td>
+            <td>{{"Visible" if historic_site.is_visible else "Oculto"}}</td>
+            <td> - </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -27,13 +27,13 @@
                                 <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Inicio</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Sitios Historicos</a>
+                                <a class="nav-link" href="{{url_for("historic_sites.index")}}">Sitios Historicos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href={{url_for("users.index")}}>Usuarios</a>
+                                <a class="nav-link" href="{{url_for("users.index")}}">Usuarios</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href={{url_for("tags.index")}}>Tags</a>
+                                <a class="nav-link" href="{{url_for("tags.index")}}">Tags</a>
                             </li>
                         </ul>
                     </div>
@@ -74,7 +74,7 @@
                 </div>
             {% endif %}
         {% endwith %}
-        <div class="mx-auto w-75 mt-4">
+        <div class="mx-auto mt-4">
             {% block content %}{% endblock %}
         </div>
     </main>
