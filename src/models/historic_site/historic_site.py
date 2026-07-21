@@ -1,6 +1,6 @@
 from src import db
 from datetime import datetime
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import String, ForeignKey, Text, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -25,6 +25,10 @@ class HistoricSite(db.Model):
     registered_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     is_visible: Mapped[bool] = mapped_column(nullable=False, default=True)
     is_delete: Mapped[bool] = mapped_column(default=False)
+    cover_image_url: Mapped[str] = mapped_column(String(255), nullable=False)
+    cover_image_public_id: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
 
     category_id: Mapped[int] = mapped_column(
         ForeignKey("categories.id"), nullable=False

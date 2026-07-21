@@ -108,6 +108,7 @@ def init_seeds():
         category_id=category1.id,  # Sitio Arqueológico
         conservation_status_id=good_status.id,  # Bueno
         user_id=super_user.id,
+        cover_image_url="https://res.cloudinary.com/q75kyjkr/image/upload/v1784580065/historic-sites-app/yjrpk3x0mfqx8cryrtzf.webp",
     )
 
     historic_site2 = historic_site_service.create_historic_site(
@@ -120,6 +121,7 @@ def init_seeds():
         category_id=category2.id,  # Arquitectura
         conservation_status_id=average_status.id,  # Regular
         user_id=admin_user.id,
+        cover_image_url="https://res.cloudinary.com/q75kyjkr/image/upload/v1784582407/historic-sites-app/od8suzxh3gtg8sqpjrbe.webp",
     )
 
     historic_site3 = historic_site_service.create_historic_site(
@@ -132,6 +134,7 @@ def init_seeds():
         category_id=category3.id,  # Infraestructura
         conservation_status_id=average_status.id,  # Regular
         user_id=editor_user.id,
+        cover_image_url="https://res.cloudinary.com/q75kyjkr/image/upload/v1784582598/historic-sites-app/itf63dqihhmaxnyzsz4q.webp",
     )
 
     historic_site4 = historic_site_service.create_historic_site(
@@ -144,6 +147,7 @@ def init_seeds():
         category_id=category1.id,  # Sitio Arqueológico
         conservation_status_id=bad_status.id,  # Malo
         user_id=super_user.id,
+        cover_image_url="https://res.cloudinary.com/q75kyjkr/image/upload/v1784582699/historic-sites-app/im7qkvqnarr79knz9wbw.webp",
     )
 
     # Tags

@@ -15,9 +15,11 @@ def create_historic_site(
     city: str,
     province: str,
     inauguration_year: int,
+    cover_image_url: str,
     category_id: int,
     conservation_status_id: int,
     user_id: int,
+    cover_image_public_id: Optional[str] = None,
 ) -> HistoricSite:
     """Crea y carga un registro de historic_sites."""
 
@@ -28,6 +30,8 @@ def create_historic_site(
         city=city,
         province=province,
         inauguration_year=inauguration_year,
+        cover_image_url=cover_image_url,
+        cover_image_public_id=cover_image_public_id,
         category_id=category_id,
         conservation_status_id=conservation_status_id,
     )

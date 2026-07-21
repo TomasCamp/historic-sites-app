@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import cloudinary
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user, login_required
@@ -33,6 +34,13 @@ def create_app():
     login_manager.login_view = "auth.login"
     login_manager.login_message = "Se debe iniciar sesión para acceder."
     login_manager.login_message_category = "danger"
+
+    cloudinary.config(
+        cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+        api_key=os.getenv("CLOUDINARY_API_KEY"),
+        api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+        secure=True,
+    )
 
     # Comandos para estructurar e instanciar la BD
     @app.cli.command("reset-db")
