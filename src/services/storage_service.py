@@ -9,6 +9,6 @@ def upload_image(file_storage, folder="historic-sites-app") -> dict:
     )
 
     return {
-        "url": upload_result.get("secure_url"),
-        "public_id": upload_result.get("public_id"),
+        "cover_image_url": upload_result.get("secure_url"),
+        "cover_image_public_id": upload_result.get("public_id"),
     }

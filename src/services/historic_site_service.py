@@ -19,6 +19,8 @@ def create_historic_site(
     category_id: int,
     conservation_status_id: int,
     user_id: int,
+    latitude: float,
+    longitude: float,
     cover_image_public_id: Optional[str] = None,
 ) -> HistoricSite:
     """Crea y carga un registro de historic_sites."""
@@ -34,6 +36,8 @@ def create_historic_site(
         cover_image_public_id=cover_image_public_id,
         category_id=category_id,
         conservation_status_id=conservation_status_id,
+        latitude=latitude,
+        longitude=longitude,
     )
     db.session.add(new_historic_site)
     db.session.flush()

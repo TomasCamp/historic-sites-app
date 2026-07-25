@@ -108,6 +108,8 @@ def init_seeds():
         category_id=category1.id,  # Sitio Arqueológico
         conservation_status_id=good_status.id,  # Bueno
         user_id=super_user.id,
+        latitude=-27.2558,
+        longitude=-55.5328,
         cover_image_url="https://res.cloudinary.com/q75kyjkr/image/upload/v1784580065/historic-sites-app/yjrpk3x0mfqx8cryrtzf.webp",
     )
 
@@ -121,6 +123,8 @@ def init_seeds():
         category_id=category2.id,  # Arquitectura
         conservation_status_id=average_status.id,  # Regular
         user_id=admin_user.id,
+        latitude=-34.6087,
+        longitude=-58.3736,
         cover_image_url="https://res.cloudinary.com/q75kyjkr/image/upload/v1784582407/historic-sites-app/od8suzxh3gtg8sqpjrbe.webp",
     )
 
@@ -134,6 +138,8 @@ def init_seeds():
         category_id=category3.id,  # Infraestructura
         conservation_status_id=average_status.id,  # Regular
         user_id=editor_user.id,
+        latitude=-34.6386,
+        longitude=-58.3557,
         cover_image_url="https://res.cloudinary.com/q75kyjkr/image/upload/v1784582598/historic-sites-app/itf63dqihhmaxnyzsz4q.webp",
     )
 
@@ -147,6 +153,8 @@ def init_seeds():
         category_id=category1.id,  # Sitio Arqueológico
         conservation_status_id=bad_status.id,  # Malo
         user_id=super_user.id,
+        latitude=-23.5886,
+        longitude=-65.3922,
         cover_image_url="https://res.cloudinary.com/q75kyjkr/image/upload/v1784582699/historic-sites-app/im7qkvqnarr79knz9wbw.webp",
     )
 
