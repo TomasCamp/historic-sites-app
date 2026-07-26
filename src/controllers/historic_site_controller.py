@@ -34,17 +34,17 @@ def create():
     form = historic_site_forms.HistoricSiteCreateForm()
 
     if form.validate_on_submit():
-        user_data = form.data.copy()
-        user_data.pop("csrf_token", None)
-        cover_image = user_data.pop("cover_image")
-        tag_ids = user_data.pop("tags")
+        historic_site_data = form.data.copy()
+        historic_site_data.pop("csrf_token", None)
+        cover_image = historic_site_data.pop("cover_image")
+        tag_ids = historic_site_data.pop("tags")
 
         # Validar Tags
         tags = []
         for tag_id in tag_ids:
             tag = tag_service.get_tag_by_id(tag_id)
             if not tag:
-                flash("La etiqueta seleccionada no es válida.", "danger")
+                flash("Una etiqueta seleccionada no es válida.", "danger")
                 return render_template("historic_sites/create.html", form=form)
             tags.append(tag)
 
@@ -52,7 +52,7 @@ def create():
         image_data = storage_service.upload_image(cover_image)
 
         historic_site = historic_site_service.create_historic_site(
-            user_id=current_user.id, **image_data, **user_data
+            user_id=current_user.id, **image_data, **historic_site_data
         )
         for tag in tags:
             historic_site_service.assign_tag_to_historic_site(
