@@ -87,7 +87,9 @@
             <td>{{historic_site.conservation_status.name}}</td>
             <td>{{historic_site.registered_at.strftime('%Y/%m/%d')}}</td>
             <td>{{"Visible" if historic_site.is_visible else "Oculto"}}</td>
-            <td> - </td>
+            <td>
+                <a href={{url_for("historic_sites.update", id=historic_site.id)}} class="btn btn-primary">Editar</a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

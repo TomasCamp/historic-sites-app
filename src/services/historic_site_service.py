@@ -126,9 +126,13 @@ def update_historic_site(
     city: str,
     province: str,
     inauguration_year: int,
+    cover_image_url: str,
     category_id: int,
     conservation_status_id: int,
     user_id: int,
+    latitude: float,
+    longitude: float,
+    cover_image_public_id: Optional[str] = None,
 ) -> Optional[HistoricSite]:
     """Modifica un registro existente de historic_sites. Si no existe devuelve None."""
 
@@ -142,8 +146,12 @@ def update_historic_site(
     historic_site.city = city
     historic_site.province = province
     historic_site.inauguration_year = inauguration_year
+    historic_site.cover_image_url = cover_image_url
+    historic_site.cover_image_public_id = cover_image_public_id
     historic_site.category_id = category_id
     historic_site.conservation_status_id = conservation_status_id
+    historic_site.latitude = latitude
+    historic_site.longitude = longitude
 
     change_event = create_change_event(
         action="UPDATE", user_id=user_id, historic_site_id=historic_site_id
@@ -167,20 +175,21 @@ def delete_historic_site(historic_site_id: int) -> bool:
 
 
 def assign_tag_to_historic_site(
-    tag: Tag, historic_site: HistoricSite, user_id: int
+    new_tags: list[Tag], historic_site: HistoricSite, user_id: int
 ) -> bool:
-    """Asigna un tag a un historic_site."""
+    """Asigna los tags ingresados a un historic_site. Devuelve False si los tags no cambiaron."""
+    current_tags_set = set(historic_site.tags)
+    new_tags_set = set(new_tags)
 
-    if tag in historic_site.tags:
+    if current_tags_set == new_tags_set:
         return False
 
-    historic_site.tags.append(tag)
+    historic_site.tags = list(new_tags_set)
 
     change_event = create_change_event(
-        action="UPDATE_TAG", user_id=user_id, historic_site_id=historic_site.id
+        action="UPDATE_TAGS", user_id=user_id, historic_site_id=historic_site.id
     )
     db.session.add(change_event)
-
     db.session.commit()
     return True
 

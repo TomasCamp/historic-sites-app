@@ -165,14 +165,11 @@ def init_seeds():
     tag4 = tag_service.create_tag("Ingeniería de Hierro")
 
     historic_site_service.assign_tag_to_historic_site(
-        tag1, historic_site1, editor_user.id
+        [tag1, tag2], historic_site1, editor_user.id
     )
     historic_site_service.assign_tag_to_historic_site(
-        tag2, historic_site1, editor_user.id
+        [tag1], historic_site2, editor_user.id
     )
     historic_site_service.assign_tag_to_historic_site(
-        tag1, historic_site2, editor_user.id
-    )
-    historic_site_service.assign_tag_to_historic_site(
-        tag3, historic_site4, editor_user.id
+        [tag3], historic_site4, editor_user.id
     )

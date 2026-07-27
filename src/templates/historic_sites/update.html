@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock %}
+{% block content %}
+
+<h1 class="text-center mb-3">Editar Sitio Historico</h1>
+
+<form method="POST" class="d-flex flex-column" enctype="multipart/form-data" novalidate>
+    {{ form.hidden_tag() }}
+    
+    <div class="mb-2">
+        {{form.name.label(class="form-label")}}
+        {{form.name(class="form-control")}}
+    </div>
+    <div class="mb-2">
+        {{form.short_description.label(class="form-label")}}
+        {{form.short_description(class="form-control")}}
+    </div>
+    <div class="mb-2">
+        {{form.full_description.label(class="form-label")}}
+        {{form.full_description(class="form-control")}}
+    </div>
+    <div class="mb-2">
+        {{form.city.label(class="form-label")}}
+        {{form.city(class="form-control")}}
+    </div>
+    <div class="mb-2">
+        {{form.province.label(class="form-label")}}
+        {{form.province(class="form-select")}}
+    </div>
+    <div class="mb-2">
+        {{form.inauguration_year.label(class="form-label")}}
+        {{form.inauguration_year(class="form-control")}}
+    </div>
+    <div class="mb-2">
+        {{form.cover_image.label(class="form-label")}}
+        {{form.cover_image(class="form-control")}}
+    </div>
+    <div class="mb-2">
+        {{form.category_id.label(class="form-label")}}
+        {{form.category_id(class="form-select")}}
+    </div>
+    <div class="mb-2">
+        {{form.conservation_status_id.label(class="form-label")}}
+        {{form.conservation_status_id(class="form-select")}}
+    </div>
+    <div class="mb-2">
+        <label>{{ form.tags.label(class="form-label") }}</label>
+        <div>
+            {% for subfield in form.tags %}
+                <label class="form-check-label">
+                    {{ subfield(class="form-check-input") }}
+                    <span>{{ subfield.label.text }}</span>
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    {{ form.latitude(id="latitude") }}
+    {{ form.longitude(id="longitude") }}
+
+    <!-- Contenedor del Mapa -->
+    <div class="mb-3">
+        <label class="form-label">Ubicación en el mapa (Hacé click para seleccionar):</label>
+        <div id="map-picker" style="height: 400px; width: 100%; border-radius: 8px;"></div>
+    </div>
+
+    <div class="mb-2">
+        <button type="submit" class="btn btn-primary">Editar Sitio Historico</button>
+        <a href={{url_for("historic_sites.index")}} class="btn btn-danger">Cancelar</a>
+    </div>
+    
+</form>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const initialLat = parseFloat(document.getElementById('latitude').value) || -34.6037;
+    const initialLng = parseFloat(document.getElementById('longitude').value) || -58.3816;
+    const initialZoom = document.getElementById('latitude').value ? 13 : 5;
+
+    const map = L.map('map-picker').setView([initialLat, initialLng], initialZoom);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    let marker;
+
+    if (document.getElementById('latitude').value && document.getElementById('longitude').value) {
+        marker = L.marker([initialLat, initialLng]).addTo(map);
+    }
+
+    map.on('click', function(e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lng;
+
+        if (marker) {
+            marker.setLatLng(e.latlng);
+        } else {
+            marker = L.marker(e.latlng).addTo(map);
+        }
+    });
+</script>
+{% endblock %}
