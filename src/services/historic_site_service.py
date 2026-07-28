@@ -169,7 +169,7 @@ def delete_historic_site(historic_site_id: int) -> bool:
     if not historic_site:
         return False
 
-    historic_site = True
+    historic_site.is_delete = True
     db.session.commit()
     return True
 
