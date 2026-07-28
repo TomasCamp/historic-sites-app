@@ -89,6 +89,18 @@
             <td>{{"Visible" if historic_site.is_visible else "Oculto"}}</td>
             <td>
                 <a href={{url_for("historic_sites.update", id=historic_site.id)}} class="btn btn-primary">Editar</a>
+                {% if historic_site.is_visible %}
+                    <form action="{{ url_for('historic_sites.toggle_status', id=historic_site.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de ocultar el sitio historico {{historic_site.name}}?');" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Ocultar</button>
+                    </form>
+                {% else %}
+                    <form action="{{ url_for('historic_sites.toggle_status', id=historic_site.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de mostrar el sitio historico {{historic_site.name}}?');" class="d-inline">
+                        <button type="submit" class="btn btn-primary">Mostrar</button>
+                    </form>
+                {% endif %}
+                <form action="{{ url_for('historic_sites.delete', id=historic_site.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar el sitio historico {{historic_site.name}}?');" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
             </td>
         </tr>
         {% endfor %}

@@ -69,7 +69,7 @@ def list_filtered_historic_sites(
     sort_by="registered_desc",
 ) -> List[HistoricSite]:
     """Devuelve todos los registros de historic_sites que cumplan los filtros como una lista."""
-    stmt = select(HistoricSite)
+    stmt = select(HistoricSite).where(HistoricSite.is_delete.is_(False))
 
     if name:
         stmt = stmt.where(HistoricSite.name.ilike(f"%{name}%"))
@@ -172,6 +172,14 @@ def delete_historic_site(historic_site_id: int) -> bool:
     historic_site.is_delete = True
     db.session.commit()
     return True
+
+
+def change_visibility_historic_site(historic_site: int) -> bool:
+    """Cambia el is_visible del historic_site y devuelve su valor actual."""
+    value = not historic_site.is_visible
+    historic_site.is_visible = value
+    db.session.commit()
+    return value
 
 
 def assign_tags_to_historic_site(

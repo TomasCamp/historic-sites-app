@@ -136,3 +136,41 @@ def update(id: int):
                 flash(error, "danger")
 
     return render_template("historic_sites/update.html", form=form)
+
+
+@bp.route("/toggle-status/<int:id>", methods=["POST"])
+@login_required
+@permission_required("historic_site_update")
+def toggle_status(id: int):
+    """Invierte el estado visible/oculto de un historic_site."""
+    historic_site = historic_site_service.get_historic_site_by_id(id)
+
+    if not historic_site:
+        flash("El sitio historico buscado no existe.", "danger")
+    else:
+        is_visible = historic_site_service.change_visibility_historic_site(
+            historic_site
+        )
+
+        message = (
+            "El sitio historico se hizo visible correctamente."
+            if is_visible
+            else "El sitio historico se ocultó correctamente."
+        )
+        flash(message, "success")
+
+    return redirect(url_for("historic_sites.index"))
+
+
+@bp.route("/delete/<int:id>", methods=["POST"])
+@login_required
+@permission_required("historic_site_delete")
+def delete(id: int):
+    """Elimina lógicamente un historic_site."""
+
+    if historic_site_service.delete_historic_site(id):
+        flash("El sitio historico fue borrado correctamente.", "success")
+    else:
+        flash("El sitio historico buscado no existe.", "danger")
+
+    return redirect(url_for("historic_sites.index"))
