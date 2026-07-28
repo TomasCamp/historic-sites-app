@@ -174,7 +174,7 @@ def delete_historic_site(historic_site_id: int) -> bool:
     return True
 
 
-def assign_tag_to_historic_site(
+def assign_tags_to_historic_site(
     new_tags: list[Tag], historic_site: HistoricSite, user_id: int
 ) -> bool:
     """Asigna los tags ingresados a un historic_site. Devuelve False si los tags no cambiaron."""

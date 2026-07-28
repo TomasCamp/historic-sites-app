@@ -164,12 +164,12 @@ def init_seeds():
     tag3 = tag_service.create_tag("Prehispánico")
     tag4 = tag_service.create_tag("Ingeniería de Hierro")
 
-    historic_site_service.assign_tag_to_historic_site(
+    historic_site_service.assign_tags_to_historic_site(
         [tag1, tag2], historic_site1, editor_user.id
     )
-    historic_site_service.assign_tag_to_historic_site(
+    historic_site_service.assign_tags_to_historic_site(
         [tag1], historic_site2, editor_user.id
     )
-    historic_site_service.assign_tag_to_historic_site(
+    historic_site_service.assign_tags_to_historic_site(
         [tag3], historic_site4, editor_user.id
     )

@@ -54,10 +54,9 @@ def create():
         historic_site = historic_site_service.create_historic_site(
             user_id=current_user.id, **image_data, **historic_site_data
         )
-        for tag in tags:
-            historic_site_service.assign_tag_to_historic_site(
-                tag, historic_site, current_user.id
-            )
+        historic_site_service.assign_tags_to_historic_site(
+            tags, historic_site, current_user.id
+        )
 
         flash("Sitio historico creado correctamente.", "success")
         return redirect(url_for("historic_sites.index"))
@@ -116,7 +115,7 @@ def update(id: int):
                 return render_template("historic_sites/update.html", form=form)
             image_data = storage_service.upload_image(cover_image)
 
-        tag_changed = historic_site_service.assign_tag_to_historic_site(
+        tag_changed = historic_site_service.assign_tags_to_historic_site(
             tags, historic_site, current_user.id
         )
         if is_changed or tag_changed:
