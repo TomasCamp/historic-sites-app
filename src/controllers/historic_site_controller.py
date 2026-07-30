@@ -174,3 +174,16 @@ def delete(id: int):
         flash("El sitio historico buscado no existe.", "danger")
 
     return redirect(url_for("historic_sites.index"))
+
+
+@bp.get("/<int:id>")
+@login_required
+@permission_required("historic_site_show")
+def show(id: int):
+    """Muestra todos los datos de un historic_site."""
+    historic_site = historic_site_service.get_historic_site_by_id(id)
+    if not historic_site:
+        flash("El sitio historico buscado no existe.", "danger")
+        return redirect(url_for("historic_sites.index"))
+
+    return render_template("historic_sites/show.html", historic_site=historic_site)
