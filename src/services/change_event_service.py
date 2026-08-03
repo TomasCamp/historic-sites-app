@@ -1,7 +1,7 @@
 from src import db
 from src.models.change_event.change_event import ChangeEvent
 from typing import List, Optional
-from sqlalchemy import select
+from sqlalchemy import select, desc
 
 
 def create_change_event(
@@ -58,3 +58,14 @@ def delete_change_event(change_event_id: int) -> bool:
     db.session.delete(change_event)
     db.session.commit()
     return True
+
+
+def list_all_change_events_of_site(id: int):
+    """Devuelve todos los registros de change_events de un historic_site como una lista."""
+
+    stmt = (
+        select(ChangeEvent)
+        .where(ChangeEvent.historic_site_id == id)
+        .order_by(desc(ChangeEvent.timestamp))
+    )
+    return db.session.scalars(stmt).all()

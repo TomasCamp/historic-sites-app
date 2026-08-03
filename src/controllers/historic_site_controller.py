@@ -1,7 +1,12 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from src.controllers.decorators import permission_required
-from src.services import historic_site_service, storage_service, tag_service
+from src.services import (
+    historic_site_service,
+    storage_service,
+    tag_service,
+    change_event_service,
+)
 from src.forms import historic_site_forms
 
 bp = Blueprint("historic_sites", __name__, url_prefix="/historic_sites")
@@ -186,4 +191,10 @@ def show(id: int):
         flash("El sitio historico buscado no existe.", "danger")
         return redirect(url_for("historic_sites.index"))
 
-    return render_template("historic_sites/show.html", historic_site=historic_site)
+    change_events = change_event_service.list_all_change_events_of_site(id)
+
+    return render_template(
+        "historic_sites/show.html",
+        historic_site=historic_site,
+        change_events=change_events,
+    )

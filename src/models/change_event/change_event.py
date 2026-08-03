@@ -9,6 +9,13 @@ if TYPE_CHECKING:
     from src.models.user.user import User
     from src.models.historic_site.historic_site import HistoricSite
 
+TYPES_TRANSLATION = {
+    "CREATE": "Creación",
+    "UPDATE": "Actualización",
+    "UPDATE_TAGS": "Edición de etiquetas",
+    "DELETE": "Eliminación",
+}
+
 
 class ChangeEvent(db.Model):
     __tablename__ = "change_events"
@@ -26,3 +33,7 @@ class ChangeEvent(db.Model):
         ForeignKey("historic_sites.id"), nullable=False
     )
     historic_site: Mapped["HistoricSite"] = relationship(back_populates="change_events")
+
+    def translated_change_type(self) -> str:
+        """Devuelve el tipo de cambio traducido al español."""
+        return TYPES_TRANSLATION.get(self.action, self.action)

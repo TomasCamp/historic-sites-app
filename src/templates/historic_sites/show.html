@@ -4,10 +4,8 @@
 {% endblock %}
 {% block content %}
 
-<h1 class="text-center mb-3">Sitio Historico</h1>
-
-<div class="m-5">
-    <h2 class="text-center fs-1">{{historic_site.name}}</h2>
+<div class="m-5 border border-secondary rounded p-5">
+    <h1 class="text-center fs-1">{{historic_site.name}}</h1>
     <div class="d-flex flex-column my-3">
         <img src="{{historic_site.cover_image_url}}" class="mx-auto my-3">
         <p class="fs-5"><b class="fs-4">Descripción:</b> {{historic_site.full_description}}</p>
@@ -26,6 +24,16 @@
     
     <div id="map" style="height: 400px; width: 100%; border-radius: 8px;"></div>
 </div>
+
+
+<div class="m-5 border border-secondary rounded p-5">
+    <h2 class="mb-3 text-center">Historial de Cambios</h2>
+    {% for change_event in change_events %}
+        <p class="border border-secondary rounded p-2 fs-5">Evento: <b>{{change_event.translated_change_type()}}</b> - Hecho por {{change_event.user.email}} el {{change_event.timestamp.strftime('%Y/%m/%d')}}</p>
+    {% endfor %}
+    
+</div>
+
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
