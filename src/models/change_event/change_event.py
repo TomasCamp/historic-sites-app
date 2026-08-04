@@ -13,6 +13,7 @@ TYPES_TRANSLATION = {
     "CREATE": "Creación",
     "UPDATE": "Actualización",
     "UPDATE_TAGS": "Edición de etiquetas",
+    "CHANGE_VISIBILITY": "Cambiar Visibilidad",
     "DELETE": "Eliminación",
 }
 
@@ -24,7 +25,7 @@ class ChangeEvent(db.Model):
     timestamp: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
     )
-    action: Mapped[str] = mapped_column(String(15), nullable=False)
+    action: Mapped[str] = mapped_column(String(20), nullable=False)
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["User"] = relationship(back_populates="change_events")

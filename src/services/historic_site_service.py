@@ -162,7 +162,7 @@ def update_historic_site(
     return historic_site
 
 
-def delete_historic_site(historic_site_id: int) -> bool:
+def delete_historic_site(historic_site_id: int, user_id: int) -> bool:
     """Elimina un registro lógicamente de historic_sites de la base de datos por su ID. Si no existe devuelve False."""
 
     historic_site = get_historic_site_by_id(historic_site_id)
@@ -170,14 +170,23 @@ def delete_historic_site(historic_site_id: int) -> bool:
         return False
 
     historic_site.is_delete = True
+
+    change_event = create_change_event(
+        action="DELETE", user_id=user_id, historic_site_id=historic_site_id
+    )
+    db.session.add(change_event)
     db.session.commit()
     return True
 
 
-def change_visibility_historic_site(historic_site: int) -> bool:
+def change_visibility_historic_site(historic_site: int, user_id: int) -> bool:
     """Cambia el is_visible del historic_site y devuelve su valor actual."""
     value = not historic_site.is_visible
     historic_site.is_visible = value
+    change_event = create_change_event(
+        action="CHANGE_VISIBILITY", user_id=user_id, historic_site_id=historic_site.id
+    )
+    db.session.add(change_event)
     db.session.commit()
     return value
 

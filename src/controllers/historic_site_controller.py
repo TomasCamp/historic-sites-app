@@ -154,7 +154,7 @@ def toggle_status(id: int):
         flash("El sitio historico buscado no existe.", "danger")
     else:
         is_visible = historic_site_service.change_visibility_historic_site(
-            historic_site
+            historic_site, current_user.id
         )
 
         message = (
@@ -173,7 +173,7 @@ def toggle_status(id: int):
 def delete(id: int):
     """Elimina lógicamente un historic_site."""
 
-    if historic_site_service.delete_historic_site(id):
+    if historic_site_service.delete_historic_site(id, current_user.id):
         flash("El sitio historico fue borrado correctamente.", "success")
     else:
         flash("El sitio historico buscado no existe.", "danger")
