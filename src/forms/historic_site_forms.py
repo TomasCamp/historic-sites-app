@@ -220,3 +220,10 @@ class HistoricSiteUpdateForm(HistoricSiteCreateForm):
         obj = kwargs.get("obj")
         if obj and not self.is_submitted():
             self.tags.data = [t.id for t in obj.tags]
+
+
+class ChangeEventPageForm(FlaskForm):
+    class Meta:
+        csrf = False
+
+    page = IntegerField(NumberRange(min=1), default=1)

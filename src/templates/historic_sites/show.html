@@ -25,14 +25,55 @@
     <div id="map" style="height: 400px; width: 100%; border-radius: 8px;"></div>
 </div>
 
-
+{% if change_events %}
 <div class="m-5 border border-secondary rounded p-5">
     <h2 class="mb-3 text-center">Historial de Cambios</h2>
     {% for change_event in change_events %}
         <p class="border border-secondary rounded p-2 fs-5">Evento: <b>{{change_event.translated_change_type()}}</b> - Hecho por {{change_event.user.email}} el {{change_event.timestamp.strftime('%Y/%m/%d')}}</p>
     {% endfor %}
     
+    <nav aria-label="Page navigation example">
+    <ul class="pagination d-flex justify-content-center">
+        <!-- Botón Previo -->
+        <li class="page-item {% if not change_events.has_prev %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{% if change_events.has_prev %}{{ url_for('historic_sites.show', id=historic_site.id, page=change_events.prev_num) }}{% else %}#{% endif %}">
+               Previo
+            </a>
+        </li>
+
+        <!-- Números de Página y Puntos Suspensivos -->
+        {% for page_num in change_events.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == change_events.page %}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">{{ page_num }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('historic_sites.show', id=historic_site.id, page=page_num) }}">
+                            {{ page_num }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&hellip;</span>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Botón Siguiente -->
+        <li class="page-item {% if not change_events.has_next %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{% if change_events.has_next %}{{ url_for('historic_sites.show', id=historic_site.id, page=change_events.next_num) }}#historial-cambios{% else %}#{% endif %}">
+               Siguiente
+            </a>
+        </li>
+    </ul>
+</nav>
 </div>
+{% endif %}
 
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

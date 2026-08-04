@@ -60,7 +60,7 @@ def delete_change_event(change_event_id: int) -> bool:
     return True
 
 
-def list_all_change_events_of_site(id: int):
+def list_all_change_events_of_site(id: int, page: int):
     """Devuelve todos los registros de change_events de un historic_site como una lista."""
 
     stmt = (
@@ -68,4 +68,4 @@ def list_all_change_events_of_site(id: int):
         .where(ChangeEvent.historic_site_id == id)
         .order_by(desc(ChangeEvent.timestamp))
     )
-    return db.session.scalars(stmt).all()
+    return db.paginate(stmt, page=page, per_page=1, error_out=False)

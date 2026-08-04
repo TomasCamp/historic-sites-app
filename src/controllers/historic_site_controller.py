@@ -191,7 +191,11 @@ def show(id: int):
         flash("El sitio historico buscado no existe.", "danger")
         return redirect(url_for("historic_sites.index"))
 
-    change_events = change_event_service.list_all_change_events_of_site(id)
+    pageForm = historic_site_forms.ChangeEventPageForm(request.args)
+
+    change_events = change_event_service.list_all_change_events_of_site(
+        id, pageForm.page.data
+    )
 
     return render_template(
         "historic_sites/show.html",
