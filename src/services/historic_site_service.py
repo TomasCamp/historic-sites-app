@@ -67,6 +67,7 @@ def list_filtered_historic_sites(
     registered_at_end=None,
     is_visible="",
     sort_by="registered_desc",
+    page=1,
 ) -> List[HistoricSite]:
     """Devuelve todos los registros de historic_sites que cumplan los filtros como una lista."""
     stmt = select(HistoricSite).where(HistoricSite.is_delete.is_(False))
@@ -115,7 +116,7 @@ def list_filtered_historic_sites(
         else:
             stmt = stmt.order_by(desc(HistoricSite.city))
 
-    return db.session.scalars(stmt).all()
+    return db.paginate(stmt, page=page, per_page=1, error_out=False)
 
 
 def update_historic_site(

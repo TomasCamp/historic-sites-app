@@ -35,7 +35,9 @@ class HistoricSiteFilterForm(FlaskForm):
     name = StringField("Nombre", validators=[Optional()])
     city = StringField("Ciudad", validators=[Optional()])
     province = SelectField(
-        "Provincia", choices=[("", "Todas")] + [(p.value, p.value) for p in Province]
+        "Provincia",
+        choices=[("", "Todas")] + [(p.value, p.value) for p in Province],
+        default="",
     )
     tags = SelectMultipleField(
         "Etiquetas",
@@ -43,7 +45,9 @@ class HistoricSiteFilterForm(FlaskForm):
         widget=ListWidget(prefix_label=False),
         option_widget=CheckboxInput(),
     )
-    conservation_status_id = SelectField("Estado de Conservación", coerce=int)
+    conservation_status_id = SelectField(
+        "Estado de Conservación", coerce=int, choices=[(0, "Todos")], default=0
+    )
     registered_at_start = DateField("Registrado Desde", validators=[Optional()])
     registered_at_end = DateField("Registrado Hasta", validators=[Optional()])
     is_visible = SelectField(
@@ -64,15 +68,15 @@ class HistoricSiteFilterForm(FlaskForm):
         ],
         default="name_asc",
     )
+    page = IntegerField(default=1)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.tags.choices = [(t.id, t.name) for t in list_all_tags()]
-        self.conservation_status_id.choices = [(0, "Todos")] + [
+        self.conservation_status_id.choices += [
             (c_s.id, c_s.name) for c_s in list_all_conservation_statuses()
         ]
-        self.conservation_status_id.default = 0
 
 
 class HistoricSiteCreateForm(FlaskForm):
