@@ -25,6 +25,7 @@
         </div>
         
         <button type="submit" class="btn btn-primary">Filtrar</button>
+        <a href="{{url_for("users.index")}}" class="btn btn-light">Limpiar Filtros</a>
     </form>
 </div>
 
@@ -42,36 +43,42 @@
         </tr>
     </thead>
     <tbody>
-        {% for user in users %}
-        <tr>
-            <td>{{user.email}}</td>
-            <td>{{user.name}} {{user.lastname}}</td>
-            <td>{{user.role.name}}</td>
-            <td>{{user.created_at.strftime('%Y/%m/%d')}}</td>
-            <td>{{"Activo" if user.is_active else "Suspendido"}}</td>
-            {% if user.is_superuser %}
-                <td> - </td>
-            {% else %}
-                <td>
-                    <a href={{url_for("users.update", id=user.id)}} class="btn btn-primary">Editar</a>
-                    {% if current_user != user %}
-                        <form action="{{ url_for('users.delete', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar al usuario {{user.email}}?');" class="d-inline">
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                        </form>
-                        {% if user.is_active %}
-                            <form action="{{ url_for('users.toggle_status', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de desactivar al usuario {{user.email}}?');" class="d-inline">
-                                <button type="submit" class="btn btn-danger">Desactivar</button>
+        {% if users.items %}
+            {% for user in users %}
+            <tr>
+                <td>{{user.email}}</td>
+                <td>{{user.name}} {{user.lastname}}</td>
+                <td>{{user.role.name}}</td>
+                <td>{{user.created_at.strftime('%Y/%m/%d')}}</td>
+                <td>{{"Activo" if user.is_active else "Suspendido"}}</td>
+                {% if user.is_superuser %}
+                    <td> - </td>
+                {% else %}
+                    <td>
+                        <a href={{url_for("users.update", id=user.id)}} class="btn btn-primary">Editar</a>
+                        {% if current_user != user %}
+                            <form action="{{ url_for('users.delete', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar al usuario {{user.email}}?');" class="d-inline">
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
                             </form>
-                        {% else %}
-                            <form action="{{ url_for('users.toggle_status', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de activar al usuario {{user.email}}?');" class="d-inline">
-                                <button type="submit" class="btn btn-primary">Activar</button>
-                            </form>
+                            {% if user.is_active %}
+                                <form action="{{ url_for('users.toggle_status', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de desactivar al usuario {{user.email}}?');" class="d-inline">
+                                    <button type="submit" class="btn btn-danger">Desactivar</button>
+                                </form>
+                            {% else %}
+                                <form action="{{ url_for('users.toggle_status', id=user.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de activar al usuario {{user.email}}?');" class="d-inline">
+                                    <button type="submit" class="btn btn-primary">Activar</button>
+                                </form>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </td>     
-            {% endif %}
-        </tr>
-        {% endfor %}
+                    </td>     
+                {% endif %}
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="9" class="text-center">No se encontraron usuarios.</td>
+            </tr>
+        {% endif %}
     </tbody>
 </table>
 
