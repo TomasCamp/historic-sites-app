@@ -49,7 +49,7 @@ def list_all_tags() -> List[Tag]:
     return db.session.scalars(stmt).all()
 
 
-def list_filtered_tags(name: str, sort_by: str) -> List[Tag]:
+def list_filtered_tags(name: str, sort_by: str, page=1) -> List[Tag]:
     """Devuelve los registros de tags filtrados como una lista"""
 
     stmt = select(Tag)
@@ -68,7 +68,7 @@ def list_filtered_tags(name: str, sort_by: str) -> List[Tag]:
         else:
             stmt = stmt.order_by(desc(Tag.name))
 
-    return db.session.scalars(stmt).all()
+    return db.paginate(stmt, page=page, per_page=1, error_out=False)
 
 
 def delete_tag(tag_id: int) -> bool:

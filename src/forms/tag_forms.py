@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField
+from wtforms import StringField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Length, Regexp
 
 
@@ -18,6 +18,7 @@ class TagFilterForm(FlaskForm):
         ],
         default="name_asc",
     )
+    page = IntegerField(default=1)
 
 
 class TagCreateForm(FlaskForm):

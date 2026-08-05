@@ -32,7 +32,7 @@
         </tr>
     </thead>
     <tbody>
-        {% if tags %}
+        {% if tags.items %}
             {% for tag in tags %}
             <tr>
                 <td>{{tag.name}}</td>
@@ -51,5 +51,46 @@
         {% endif %}
     </tbody>
 </table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination d-flex justify-content-center">
+        <!-- Botón Previo -->
+        <li class="page-item {% if not tags.has_prev %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{% if tags.has_prev %}{{ url_for('tags.index', **dict(request.args, page=tags.prev_num)) }}{% else %}#{% endif %}">
+               Previo
+            </a>
+        </li>
+
+        <!-- Números de Página -->
+        {% for page_num in tags.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == tags.page %}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">{{ page_num }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('tags.index', **dict(request.args, page=page_num)) }}">
+                            {{ page_num }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&hellip;</span>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Botón Siguiente -->
+        <li class="page-item {% if not tags.has_next %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{% if tags.has_next %}{{ url_for('tags.index', **dict(request.args, page=tags.next_num)) }}{% else %}#{% endif %}">
+               Siguiente
+            </a>
+        </li>
+    </ul>
+</nav>
 
 {% endblock %}
