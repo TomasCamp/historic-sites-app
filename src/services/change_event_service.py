@@ -61,7 +61,7 @@ def delete_change_event(change_event_id: int) -> bool:
 
 
 def list_all_change_events_of_site(id: int, page: int):
-    """Devuelve todos los registros de change_events de un historic_site como una lista."""
+    """Devuelve todos los registros de change_events de un historic_site como una lista paginada."""
 
     stmt = (
         select(ChangeEvent)

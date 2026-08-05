@@ -23,7 +23,6 @@ def index():
     if form.validate():
         filters = form.data
 
-    print(form.errors)
     historic_sites = historic_site_service.list_filtered_historic_sites(**filters)
 
     return render_template(
@@ -112,7 +111,6 @@ def update(id: int):
             "cover_image_public_id": historic_site.cover_image_public_id,
         }
 
-        print(cover_image.filename)
         if bool(cover_image and cover_image.filename):
             is_changed = True
             if not storage_service.delete_image(historic_site.cover_image_public_id):

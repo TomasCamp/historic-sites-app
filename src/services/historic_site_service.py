@@ -69,7 +69,7 @@ def list_filtered_historic_sites(
     sort_by="registered_desc",
     page=1,
 ) -> List[HistoricSite]:
-    """Devuelve todos los registros de historic_sites que cumplan los filtros como una lista."""
+    """Devuelve todos los registros de historic_sites que cumplan los filtros como una lista paginada."""
     stmt = select(HistoricSite).where(HistoricSite.is_delete.is_(False))
 
     if name:
