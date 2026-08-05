@@ -70,7 +70,7 @@ def get_user_by_email(user_email: str) -> Optional[User]:
 
 
 def list_filtered_users(
-    email=None, active=None, role_id=None, sort_by="created_at_desc"
+    email=None, active=None, role_id=None, sort_by="created_at_desc", page=1
 ) -> List[User]:
     """Devuelve todos los registros de users que cumplan los filtros como una lista."""
     stmt = select(User).where(User.is_delete.is_(False))
@@ -91,7 +91,7 @@ def list_filtered_users(
     else:
         stmt = stmt.order_by(desc(User.created_at))
 
-    return db.session.scalars(stmt).all()
+    return db.paginate(stmt, page=page, per_page=1, error_out=False)
 
 
 def update_user(user_id: int, name: str, lastname: str, role_id: int) -> Optional[User]:

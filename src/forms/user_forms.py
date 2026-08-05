@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, EmailField, PasswordField
+from wtforms import StringField, SelectField, EmailField, PasswordField, IntegerField
 from src.services import user_service
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 
@@ -7,9 +7,11 @@ from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 class UserFilterForm(FlaskForm):
     email = StringField("Email")
     active = SelectField(
-        "Estado", choices=[("", "Todos"), ("1", "Activo"), ("0", "Suspendido")]
+        "Estado",
+        choices=[("", "Todos"), ("1", "Activo"), ("0", "Suspendido")],
+        default="",
     )
-    role_id = SelectField("Rol")
+    role_id = SelectField("Rol", choices=[("", "Todos")], default="")
     sort_by = SelectField(
         "Ordenar por",
         choices=[
@@ -18,6 +20,7 @@ class UserFilterForm(FlaskForm):
         ],
         default="created_at_desc",
     )
+    page = IntegerField(default=1)
 
     def __init__(self, *args, **kwargs):
         kwargs["meta"] = {"csrf": False}
@@ -25,9 +28,7 @@ class UserFilterForm(FlaskForm):
 
         roles = user_service.list_all_roles()
 
-        self.role_id.choices = [("", "Todos")] + [
-            (str(role.id), role.name) for role in roles
-        ]
+        self.role_id.choices += [(str(role.id), role.name) for role in roles]
 
 
 class UserCreateForm(FlaskForm):

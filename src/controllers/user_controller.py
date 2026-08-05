@@ -17,7 +17,6 @@ def index():
     filters = {}
     if form.validate():
         filters = form.data
-    print(form.errors)
 
     users = user_service.list_filtered_users(**filters)
 
