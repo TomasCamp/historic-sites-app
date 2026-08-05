@@ -73,38 +73,44 @@
         </tr>
     </thead>
     <tbody>
-        {% for historic_site in historic_sites %}
-        <tr>
-            <td><img src="{{historic_site.cover_image_url}}" style="width: 10vw;"></td>
-            <td>{{historic_site.name}}</td>
-            <td>{{historic_site.province}}</td>
-            <td>{{historic_site.city}}</td>
-            <td>
-                {% for tag in historic_site.tags %}
-                <p class="border border-dark rounded">{{tag.name}}</p>
-                {% endfor %}
-            </td>
-            <td>{{historic_site.conservation_status.name}}</td>
-            <td>{{historic_site.registered_at.strftime('%Y/%m/%d')}}</td>
-            <td>{{"Visible" if historic_site.is_visible else "Oculto"}}</td>
-            <td>
-                <a href={{url_for("historic_sites.show", id=historic_site.id)}} class="btn btn-primary">Ver</a>
-                <a href={{url_for("historic_sites.update", id=historic_site.id)}} class="btn btn-primary">Editar</a>
-                {% if historic_site.is_visible %}
-                    <form action="{{ url_for('historic_sites.toggle_status', id=historic_site.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de ocultar el sitio historico {{historic_site.name}}?');" class="d-inline">
-                        <button type="submit" class="btn btn-danger">Ocultar</button>
+        {% if historic_sites.items %}
+            {% for historic_site in historic_sites %}
+            <tr>
+                <td><img src="{{historic_site.cover_image_url}}" style="width: 10vw;"></td>
+                <td>{{historic_site.name}}</td>
+                <td>{{historic_site.province}}</td>
+                <td>{{historic_site.city}}</td>
+                <td>
+                    {% for tag in historic_site.tags %}
+                    <p class="border border-dark rounded">{{tag.name}}</p>
+                    {% endfor %}
+                </td>
+                <td>{{historic_site.conservation_status.name}}</td>
+                <td>{{historic_site.registered_at.strftime('%Y/%m/%d')}}</td>
+                <td>{{"Visible" if historic_site.is_visible else "Oculto"}}</td>
+                <td>
+                    <a href={{url_for("historic_sites.show", id=historic_site.id)}} class="btn btn-primary">Ver</a>
+                    <a href={{url_for("historic_sites.update", id=historic_site.id)}} class="btn btn-primary">Editar</a>
+                    {% if historic_site.is_visible %}
+                        <form action="{{ url_for('historic_sites.toggle_status', id=historic_site.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de ocultar el sitio historico {{historic_site.name}}?');" class="d-inline">
+                            <button type="submit" class="btn btn-danger">Ocultar</button>
+                        </form>
+                    {% else %}
+                        <form action="{{ url_for('historic_sites.toggle_status', id=historic_site.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de mostrar el sitio historico {{historic_site.name}}?');" class="d-inline">
+                            <button type="submit" class="btn btn-primary">Mostrar</button>
+                        </form>
+                    {% endif %}
+                    <form action="{{ url_for('historic_sites.delete', id=historic_site.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar el sitio historico {{historic_site.name}}?');" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
-                {% else %}
-                    <form action="{{ url_for('historic_sites.toggle_status', id=historic_site.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de mostrar el sitio historico {{historic_site.name}}?');" class="d-inline">
-                        <button type="submit" class="btn btn-primary">Mostrar</button>
-                    </form>
-                {% endif %}
-                <form action="{{ url_for('historic_sites.delete', id=historic_site.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar el sitio historico {{historic_site.name}}?');" class="d-inline">
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="9" class="text-center">No se encontraron sitios historicos.</td>
+            </tr>
+        {% endif %}
     </tbody>
 </table>
 
