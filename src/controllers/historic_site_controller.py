@@ -9,7 +9,7 @@ from src.services import (
 )
 from src.forms import historic_site_forms
 
-bp = Blueprint("historic_sites", __name__, url_prefix="/historic_sites")
+bp = Blueprint("admin_historic_sites", __name__, url_prefix="/admin/historic_sites")
 
 
 @bp.get("/")
@@ -26,7 +26,7 @@ def index():
     historic_sites = historic_site_service.list_filtered_historic_sites(**filters)
 
     return render_template(
-        "historic_sites/index.html", historic_sites=historic_sites, form=form
+        "admin/historic_sites/index.html", historic_sites=historic_sites, form=form
     )
 
 
@@ -49,7 +49,7 @@ def create():
             tag = tag_service.get_tag_by_id(tag_id)
             if not tag:
                 flash("Una etiqueta seleccionada no es válida.", "danger")
-                return render_template("historic_sites/create.html", form=form)
+                return render_template("admin/historic_sites/create.html", form=form)
             tags.append(tag)
 
         # Subir imagen
@@ -63,13 +63,13 @@ def create():
         )
 
         flash("Sitio historico creado correctamente.", "success")
-        return redirect(url_for("historic_sites.index"))
+        return redirect(url_for("admin_historic_sites.index"))
     else:
         for field_name, error_messages in form.errors.items():
             for error in error_messages:
                 flash(error, "danger")
 
-    return render_template("historic_sites/create.html", form=form)
+    return render_template("admin/historic_sites/create.html", form=form)
 
 
 @bp.route("/update/<int:id>", methods=["GET", "POST"])
@@ -81,7 +81,7 @@ def update(id: int):
 
     if not historic_site:
         flash("El sitio historico buscado no existe.", "danger")
-        return redirect(url_for("historic_sites.index"))
+        return redirect(url_for("admin_historic_sites.index"))
 
     form = historic_site_forms.HistoricSiteUpdateForm(obj=historic_site)
 
@@ -97,7 +97,7 @@ def update(id: int):
             tag = tag_service.get_tag_by_id(tag_id)
             if not tag:
                 flash("Una etiqueta seleccionada no es válida.", "danger")
-                return render_template("historic_sites/update.html", form=form)
+                return render_template("admin/historic_sites/update.html", form=form)
             tags.append(tag)
 
         is_changed = any(
@@ -115,7 +115,7 @@ def update(id: int):
             is_changed = True
             if not storage_service.delete_image(historic_site.cover_image_public_id):
                 flash("Hubo un error al cambiar de imagen.", "danger")
-                return render_template("historic_sites/update.html", form=form)
+                return render_template("admin/historic_sites/update.html", form=form)
             image_data = storage_service.upload_image(cover_image)
 
         tag_changed = historic_site_service.assign_tags_to_historic_site(
@@ -130,7 +130,7 @@ def update(id: int):
                     **historic_site_data,
                 )
             flash("Sitio historico editado correctamente.", "success")
-            return redirect(url_for("historic_sites.index"))
+            return redirect(url_for("admin_historic_sites.index"))
         else:
             flash("No hubo cambios detectados.", "danger")
     else:
@@ -138,7 +138,7 @@ def update(id: int):
             for error in error_messages:
                 flash(error, "danger")
 
-    return render_template("historic_sites/update.html", form=form)
+    return render_template("admin/historic_sites/update.html", form=form)
 
 
 @bp.route("/toggle-status/<int:id>", methods=["POST"])
@@ -162,7 +162,7 @@ def toggle_status(id: int):
         )
         flash(message, "success")
 
-    return redirect(url_for("historic_sites.index"))
+    return redirect(url_for("admin_historic_sites.index"))
 
 
 @bp.route("/delete/<int:id>", methods=["POST"])
@@ -176,7 +176,7 @@ def delete(id: int):
     else:
         flash("El sitio historico buscado no existe.", "danger")
 
-    return redirect(url_for("historic_sites.index"))
+    return redirect(url_for("admin_historic_sites.index"))
 
 
 @bp.get("/<int:id>")
@@ -187,7 +187,7 @@ def show(id: int):
     historic_site = historic_site_service.get_historic_site_by_id(id)
     if not historic_site:
         flash("El sitio historico buscado no existe.", "danger")
-        return redirect(url_for("historic_sites.index"))
+        return redirect(url_for("admin_historic_sites.index"))
 
     pageForm = historic_site_forms.ChangeEventPageForm(request.args)
 
@@ -196,7 +196,7 @@ def show(id: int):
     )
 
     return render_template(
-        "historic_sites/show.html",
+        "admin/historic_sites/show.html",
         historic_site=historic_site,
         change_events=change_events,
     )

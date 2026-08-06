@@ -4,7 +4,7 @@ from src.controllers.decorators import permission_required
 from src.services import tag_service
 from src.forms import tag_forms
 
-bp = Blueprint("tags", __name__, url_prefix="/tags")
+bp = Blueprint("admin_tags", __name__, url_prefix="/admin/tags")
 
 
 @bp.get("/")
@@ -20,7 +20,7 @@ def index():
 
     tags = tag_service.list_filtered_tags(**filters)
 
-    return render_template("tags/index.html", tags=tags, form=form)
+    return render_template("admin/tags/index.html", tags=tags, form=form)
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -35,7 +35,7 @@ def create():
         tag_data.pop("csrf_token", None)
         if tag_service.create_tag(**tag_data):
             flash("Etiqueta creada correctamente.", "success")
-            return redirect(url_for("tags.index"))
+            return redirect(url_for("admin_tags.index"))
         else:
             flash("Ya existe una etiqueta igual o parecida.", "danger")
     else:
@@ -43,7 +43,7 @@ def create():
             for error in error_messages:
                 flash(error, "danger")
 
-    return render_template("tags/create.html", form=form)
+    return render_template("admin/tags/create.html", form=form)
 
 
 @bp.post("/delete/<int:id>")
@@ -57,4 +57,4 @@ def delete(id: int):
     else:
         flash("La etiqueta buscada no existe.", "danger")
 
-    return redirect(url_for("tags.index"))
+    return redirect(url_for("admin_tags.index"))

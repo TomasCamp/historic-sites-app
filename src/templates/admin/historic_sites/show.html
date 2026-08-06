@@ -37,7 +37,7 @@
         <!-- Botón Previo -->
         <li class="page-item {% if not change_events.has_prev %}disabled{% endif %}">
             <a class="page-link" 
-               href="{% if change_events.has_prev %}{{ url_for('historic_sites.show', id=historic_site.id, page=change_events.prev_num) }}{% else %}#{% endif %}">
+               href="{% if change_events.has_prev %}{{ url_for('admin_historic_sites.show', id=historic_site.id, page=change_events.prev_num) }}{% else %}#{% endif %}">
                Previo
             </a>
         </li>
@@ -51,7 +51,7 @@
                     </li>
                 {% else %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('historic_sites.show', id=historic_site.id, page=page_num) }}">
+                        <a class="page-link" href="{{ url_for('admin_historic_sites.show', id=historic_site.id, page=page_num) }}">
                             {{ page_num }}
                         </a>
                     </li>
@@ -66,7 +66,7 @@
         <!-- Botón Siguiente -->
         <li class="page-item {% if not change_events.has_next %}disabled{% endif %}">
             <a class="page-link" 
-               href="{% if change_events.has_next %}{{ url_for('historic_sites.show', id=historic_site.id, page=change_events.next_num) }}#historial-cambios{% else %}#{% endif %}">
+               href="{% if change_events.has_next %}{{ url_for('admin_historic_sites.show', id=historic_site.id, page=change_events.next_num) }}#historial-cambios{% else %}#{% endif %}">
                Siguiente
             </a>
         </li>

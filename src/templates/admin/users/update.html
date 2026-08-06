@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1 class="text-center mb-3">Crear Usuario</h1>
+<h1 class="text-center mb-3">Editar Usuario</h1>
 
 <form method="POST" class="d-flex flex-column">
     {{ form.hidden_tag() }}
@@ -15,25 +15,17 @@
         {{form.lastname(class="form-control")}}
     </div>
     <div class="mb-2">
-        {{form.email.label(class="form-label")}}
-        {{form.email(class="form-control")}}
+        <label class="form-label">Email</label>
+        <p class="form-control bg-secondary text-light">{{user.email}}</p>
     </div>
     <div class="mb-2">
         {{form.role_id.label(class="form-label")}}
         {{form.role_id(class="form-select")}}
     </div>
-    <div class="mb-2">
-        {{form.password.label(class="form-label")}}
-        {{form.password(class="form-control")}}
-    </div>
-    <div class="mb-2">
-        {{form.password_confirm.label(class="form-label")}}
-        {{form.password_confirm(class="form-control")}}
-    </div>
 
     <div class="mb-2">
-        <button type="submit" class="btn btn-primary">Crear Usuario</button>
-        <a href={{url_for("users.index")}} class="btn btn-danger">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Editar Usuario</button>
+        <a href="{{url_for("admin_users.index")}}" class="btn btn-danger">Cancelar</a>
     </div>
     
 

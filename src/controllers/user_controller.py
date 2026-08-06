@@ -4,7 +4,7 @@ from src.controllers.decorators import permission_required
 from src.services import user_service
 from src.forms import user_forms
 
-bp = Blueprint("users", __name__, url_prefix="/users")
+bp = Blueprint("admin_users", __name__, url_prefix="/admin/users")
 
 
 @bp.get("/")
@@ -20,7 +20,7 @@ def index():
 
     users = user_service.list_filtered_users(**filters)
 
-    return render_template("users/index.html", users=users, form=form)
+    return render_template("admin/users/index.html", users=users, form=form)
 
 
 @bp.route("/create", methods=["GET", "POST"])
@@ -37,14 +37,14 @@ def create():
         new_user = user_service.create_user(**user_data)
         if new_user:
             flash("Usuario creado correctamente.", "success")
-            return redirect(url_for("users.index"))
+            return redirect(url_for("admin_users.index"))
         flash("El email ingresado ya pertenece a un usuario registrado.", "danger")
     else:
         for field_name, error_messages in form.errors.items():
             for error in error_messages:
                 flash(error, "danger")
 
-    return render_template("users/create.html", form=form)
+    return render_template("admin/users/create.html", form=form)
 
 
 @bp.route("/update/<int:id>", methods=["GET", "POST"])
@@ -56,7 +56,7 @@ def update(id: int):
 
     if not user:
         flash("El usuario buscado no existe.", "danger")
-        return redirect(url_for("users.index"))
+        return redirect(url_for("admin_users.index"))
 
     form = user_forms.UserUpdateForm(request.form, obj=user)
 
@@ -65,13 +65,13 @@ def update(id: int):
         user_data.pop("csrf_token", None)
         user_service.update_user(id, **user_data)
         flash("Usuario editado correctamente.", "success")
-        return redirect(url_for("users.index"))
+        return redirect(url_for("admin_users.index"))
     else:
         for field_name, error_messages in form.errors.items():
             for error in error_messages:
                 flash(error, "danger")
 
-    return render_template("users/update.html", form=form, user=user)
+    return render_template("admin/users/update.html", form=form, user=user)
 
 
 @bp.route("/delete/<int:id>", methods=["POST"])
@@ -89,7 +89,7 @@ def delete(id: int):
         user_service.delete_user(id)
         flash("El usuario fue eliminado correctamente.", "success")
 
-    return redirect(url_for("users.index"))
+    return redirect(url_for("admin_users.index"))
 
 
 @bp.route("/toggle-status/<int:id>", methods=["POST"])
@@ -114,4 +114,4 @@ def toggle_status(id: int):
         )
         flash(mensaje, "success")
 
-    return redirect(url_for("users.index"))
+    return redirect(url_for("admin_users.index"))
