@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock %}
+{% block content %}
+
+<div class="m-5 border border-secondary rounded p-5">
+    <h1 class="text-center fs-1">{{historic_site.name}}</h1>
+    <div class="d-flex flex-column my-3">
+        <img src="{{historic_site.cover_image_url}}" class="mx-auto my-3">
+        <p class="fs-5"><b class="fs-4">Descripción:</b> {{historic_site.full_description}}</p>
+        <p class="fs-5"><b class="fs-4">Provincia:</b> {{historic_site.province}}</p>
+        <p class="fs-5"><b class="fs-4">Ciudad:</b> {{historic_site.city}}</p>
+        <p class="fs-5"><b class="fs-4">Año de Inauguración:</b> {{historic_site.inauguration_year}}</p>
+        <p class="fs-5"><b class="fs-4">Categoría:</b> {{historic_site.category.name}}</p>
+        <p class="fs-5"><b class="fs-4">Estado de Conservación:</b> {{historic_site.conservation_status.name}}</p>
+        <p class="fs-5"><b class="fs-4">Etiquetas:</b></p>
+        <div class="d-flex">    
+            {% for tag in historic_site.tags %}
+                <p class="border border-secondary rounded p-1 m-1">{{tag.name}}</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div id="map" style="height: 400px; width: 100%; border-radius: 8px;"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const initialLat = {{ historic_site.latitude }};
+    const initialLng = {{ historic_site.longitude }};
+
+    const map = L.map('map').setView([initialLat, initialLng], 15);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    let marker = L.marker([initialLat, initialLng]).addTo(map);
+</script>
+{% endblock %}

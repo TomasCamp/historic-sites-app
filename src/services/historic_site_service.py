@@ -116,7 +116,7 @@ def list_filtered_historic_sites(
         else:
             stmt = stmt.order_by(desc(HistoricSite.city))
 
-    return db.paginate(stmt, page=page, per_page=1, error_out=False)
+    return db.paginate(stmt, page=page, per_page=20, error_out=False)
 
 
 def update_historic_site(

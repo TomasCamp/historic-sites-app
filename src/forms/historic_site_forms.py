@@ -79,6 +79,48 @@ class HistoricSiteFilterForm(FlaskForm):
         ]
 
 
+class PublicHistoricSiteFilterForm(FlaskForm):
+    class Meta:
+        csrf = False
+
+    name = StringField("Nombre", validators=[Optional()])
+    city = StringField("Ciudad", validators=[Optional()])
+    province = SelectField(
+        "Provincia",
+        choices=[("", "Todas")] + [(p.value, p.value) for p in Province],
+        default="",
+    )
+    tags = SelectMultipleField(
+        "Etiquetas",
+        coerce=int,
+        widget=ListWidget(prefix_label=False),
+        option_widget=CheckboxInput(),
+    )
+    conservation_status_id = SelectField(
+        "Estado de Conservación", coerce=int, choices=[(0, "Todos")], default=0
+    )
+
+    sort_by = SelectField(
+        "Ordenar por",
+        choices=[
+            ("name_asc", "Nombre A-Z"),
+            ("name_desc", "Nombre Z-A"),
+            ("city_asc", "Ciudad A-Z"),
+            ("city_desc", "Ciudad Z-A"),
+        ],
+        default="name_asc",
+    )
+    page = IntegerField(default=1)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.tags.choices = [(t.id, t.name) for t in list_all_tags()]
+        self.conservation_status_id.choices += [
+            (c_s.id, c_s.name) for c_s in list_all_conservation_statuses()
+        ]
+
+
 class HistoricSiteCreateForm(FlaskForm):
     name = StringField(
         "Nombre",

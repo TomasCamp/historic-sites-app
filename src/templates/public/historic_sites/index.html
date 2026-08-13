@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 class="text-center">Sitios Historicos</h1>
+<div class="mb-3">
+    <h2 class="">Filtros</h2>
+    <form method="GET" class="d-flex flex-wrap">
+        <div class="d-flex w-100 justify-content-between flex-wrap">
+            <div class="mb-2 w-25 me-2">
+                {{form.name.label(class="form-label")}}
+                {{form.name(class="form-control")}}
+            </div>
+            <div class="mb-2 w-25 me-2">
+                {{form.city.label(class="form-label")}}
+                {{form.city(class="form-control")}}
+            </div>
+            <div class="mb-2 w-25 me-2">
+                {{form.province.label(class="form-label")}}
+                {{form.province(class="form-select")}}
+            </div>
+            <div class="mb-2 w-25">
+                {{form.conservation_status_id.label(class="form-label")}}
+                {{form.conservation_status_id(class="form-select")}}
+            </div>
+            <div class="mb-2 w-25">
+                {{form.sort_by.label(class="form-label")}}
+                {{form.sort_by(class="form-select")}}
+            </div>
+            <div class="mb-2 w-25 me-2">
+                <label>{{ form.tags.label(class="form-label") }}</label>
+                <div>
+                    {% for subfield in form.tags %}
+                        <label class="form-check-label">
+                            {{ subfield(class="form-check-input") }}
+                            <span>{{ subfield.label.text }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <a href="{{url_for("historic_sites.index")}}" class="btn btn-light">Limpiar Filtros</a>
+    </form>
+</div>
+
+<div class="mx-auto d-flex justify-content-evenly flex-wrap" style="width: 80vw;">
+    {% for historic_site in historic_sites %}
+        <div class="card border border-secondary my-3" style="width: 18rem;">
+            <img src="{{historic_site.cover_image_url}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{historic_site.name}}</h5>
+                <p>{{historic_site.city}}, {{historic_site.province}}</p>
+                <p>Estado {{historic_site.conservation_status.name}}</p>
+                <p class="card-text">{{historic_site.short_description}}</p>
+                <div class="d-flex justify-content-between flex-wrap">
+                    {% for tag in historic_site.tags %}
+                        <p class="border border-secondary rounded p-1">{{tag.name}}</p>
+                    {% endfor %}
+                </div>
+                <a href="{{url_for("historic_sites.show", id=historic_site.id)}}" class="btn btn-primary">Ver</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination d-flex justify-content-center">
+        <!-- Botón Previo -->
+        <li class="page-item {% if not historic_sites.has_prev %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{% if historic_sites.has_prev %}{{ url_for('historic_sites.index', **dict(request.args, page=historic_sites.prev_num)) }}{% else %}#{% endif %}">
+               Previo
+            </a>
+        </li>
+
+        <!-- Números de Página -->
+        {% for page_num in historic_sites.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == historic_sites.page %}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">{{ page_num }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('historic_sites.index', **dict(request.args, page=page_num)) }}">
+                            {{ page_num }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&hellip;</span>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Botón Siguiente -->
+        <li class="page-item {% if not historic_sites.has_next %}disabled{% endif %}">
+            <a class="page-link" 
+               href="{% if historic_sites.has_next %}{{ url_for('historic_sites.index', **dict(request.args, page=historic_sites.next_num)) }}{% else %}#{% endif %}">
+               Siguiente
+            </a>
+        </li>
+    </ul>
+</nav>
+
+{% endblock %}

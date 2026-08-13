@@ -73,10 +73,12 @@ def create_app():
     from src.controllers.user_controller import bp as user_bp
     from src.controllers.tag_controller import bp as tag_bp
     from src.controllers.historic_site_controller import bp as sites_bp
+    from src.controllers.public_historic_site_controller import bp as public_sites_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(tag_bp)
     app.register_blueprint(sites_bp)
+    app.register_blueprint(public_sites_bp)
 
     return app
