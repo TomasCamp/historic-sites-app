@@ -9,6 +9,7 @@ def init_seeds():
     # Roles
     admin_role = user_service.create_role("Administrador")
     editor_role = user_service.create_role("Editor")
+    user_role = user_service.create_role("Usuario")
 
     # Permissions
     user_index = user_service.create_permission("user_index")
@@ -32,6 +33,9 @@ def init_seeds():
     tag_create = user_service.create_permission("tag_create")
     tag_update = user_service.create_permission("tag_update")
     tag_delete = user_service.create_permission("tag_delete")
+
+    comment_create = user_service.create_permission("comment_create")
+    comment_delete = user_service.create_permission("comment_delete")
 
     admin_permission = [
         user_index,
@@ -64,12 +68,16 @@ def init_seeds():
         tag_update,
         tag_delete,
     ]
+    user_permission = [comment_create, comment_delete]
 
     for permission in admin_permission:
         user_service.assign_permission_to_role(permission, admin_role)
 
     for permission in editor_permission:
         user_service.assign_permission_to_role(permission, editor_role)
+
+    for permission in user_permission:
+        user_service.assign_permission_to_role(permission, user_role)
 
     # Users
     super_user = user_service.create_super_user(
@@ -80,6 +88,9 @@ def init_seeds():
     )
     editor_user = user_service.create_user(
         "Richard", "Roe", "editor@example.com", "password", editor_role.id
+    )
+    common_user = user_service.create_user(
+        "John", "Roe", "user@example.com", "password", user_role.id
     )
 
     # Conservation_statuses

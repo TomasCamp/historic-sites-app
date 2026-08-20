@@ -1,8 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 import cloudinary
 import os
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, current_user, login_required
+from flask_login import LoginManager, current_user
 from flask_session import Session
 from flask_bcrypt import Bcrypt
 from src.config import config_by_name
@@ -64,9 +64,11 @@ def create_app():
         print("✅ Datos de prueba cargados con éxito.")
 
     @app.route("/")
-    @login_required
     def index():
-        return render_template("home.html", user=current_user)
+        if current_user.is_authenticated:
+            if not current_user.is_user():
+                return redirect(url_for("admin_historic_sites.index"))
+        return redirect(url_for("historic_sites.index"))
 
     # Registro de blueprints
     from src.controllers.auth_controller import bp as auth_bp

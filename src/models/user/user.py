@@ -37,3 +37,7 @@ class User(db.Model, UserMixin):
         return self.is_superuser or permission_name in [
             permission.name for permission in self.role.permissions
         ]
+
+    def is_user(self) -> bool:
+        """Devuevle True si el rol del usario es Usuario."""
+        return self.role.name == "Usuario"
